@@ -10,60 +10,92 @@ import (
 
 func LoginPage(c *gin.Context) {
 	// Check if user is already has a valid session
+	token, _ := c.Cookie("token")
+	check := middleware.Validate(token)
 
+	if check {
+		c.Redirect(http.StatusTemporaryRedirect, "dashboard")
+		return
+	}
 	// Load Login Page
 	c.HTML(http.StatusOK, "login.html", nil)
 }
 
 func Login(c *gin.Context) {
-	token := middleware.Authorize()
+	username := c.PostForm("username")
+	password := c.PostForm("password")
+	token := middleware.Authorize(username, password)
 	if token != "" {
+		// "localhost" has to be updated for the domain / IP address
+		c.SetCookie("token", token, 3600, "/", "localhost", false, false)
 		c.Redirect(http.StatusTemporaryRedirect, "/dashboard")
 	} else {
-		c.HTML(http.StatusUnauthorized, "Unauthorized", nil)
+		// TODO: Needs to give a failed auth message
+		c.HTML(http.StatusUnauthorized, "login.html", nil)
 	}
 }
 
 func Logout(c *gin.Context) {
+	token, _ := c.Cookie("token")
+	check := middleware.Validate(token)
 
+	if check {
+		c.SetCookie("token", "", 0, "/", "localhost", false, false)
+		middleware.DeAuthorize()
+	}
+	c.HTML(http.StatusTemporaryRedirect, "login.html", nil)
 }
 
 func LoadPage(c *gin.Context) {
+	token, _ := c.Cookie("token")
+	check := middleware.Validate(token)
+	if !check {
+		c.Redirect(http.StatusTemporaryRedirect, "/login.html")
+	}
+
 	// parse path in this function
 	path := c.Request.URL.Path
 	pathArr := strings.Split(path, "/")
-	if len(pathArr) == 0 {
-		c.JSON(404, gin.H{"code": "PAGE_NOT_FOUND", "message": "Page not found"})
+	if len(pathArr) < 2 {
+		c.HTML(http.StatusNotFound, "404.html", nil)
+		return
 	}
 
-	switch pathArr[0] {
-	case "/api":
+	switch pathArr[1] {
+	case "api":
 		FowardAPICall(path)
-	case "/dashboard":
-		break
-	case "/targets":
+	case "dashboard.html", "dashboard", "index.html":
+		c.HTML(http.StatusOK, "index.html", nil)
+		return
+	case "targets.html", "targets":
 		// Load Targets Page
-		if len(pathArr) == 1 {
-
+		if len(pathArr) == 2 {
+			c.HTML(http.StatusOK, "targets.html", nil)
+			return
 		} else { // Load a Specific Target
 
 		}
-	case "/actions":
+		break
+	case "actions.html", "actions":
 		// Load Actions Page
-		if len(pathArr) == 1 {
-
+		if len(pathArr) == 2 {
+			c.HTML(http.StatusOK, "actions.html", nil)
+			return
 		} else { // Load a Specific Action
 
 		}
-	case "/groups":
+		break
+	case "groups.html", "groups":
 		// Load Groups Page
-		if len(pathArr) == 1 {
-
+		if len(pathArr) == 2 {
+			c.HTML(http.StatusOK, "groups.html", nil)
+			return
 		} else { // Load a Specific group
 
 		}
-	case "/profile":
-		LoadProfile(path)
+		break
+	case "profile.html", "profile":
+		c.HTML(http.StatusOK, "groups.html", nil)
 	default:
 		break
 	}
@@ -72,8 +104,4 @@ func LoadPage(c *gin.Context) {
 
 func FowardAPICall(path string) {
 	// Make request to the internal restapi
-}
-
-func LoadProfile(path string) {
-
 }
