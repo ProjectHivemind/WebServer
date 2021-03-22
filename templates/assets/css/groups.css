@@ -129,7 +129,7 @@
 .modal .modal-group-stuff {
   width: 70%;
   max-width: none;
-  height: auto;
+  height: 95%;
 }
 
 .modal .modal-content {
@@ -139,5 +139,9 @@
 
 .modal .modal-body {
   overflow-y: auto;
+}
+
+.loading-modal .close {
+  display: none;
 }
 
