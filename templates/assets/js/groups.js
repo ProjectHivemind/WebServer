@@ -2,17 +2,9 @@
 
   var row_to_remove = ''; //global variable
   var group_info = ''; //global variable
-  var loaded_implants = false;
 
   $(document).on('shown.bs.modal', '#delete-group-modal', function (event) {
     row_to_remove = $(event.relatedTarget);
-  });
-
-  $(document).on('shown.bs.modal', '#add-group-modal', function (event) {
-    if (!loaded_implants) {
-      loaded_implants = true;
-
-    }
   });
 
   $('#create-group-table tbody').on('click', 'tr', function () {
