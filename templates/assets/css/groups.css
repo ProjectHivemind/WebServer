@@ -85,9 +85,9 @@
   background: #ee3535;
 }
 
-/* .modal-group {
+.modal-group {
   width: 350px;
-} */
+}
 
 .modal-group .modal-content {
   padding: 20px;
@@ -122,23 +122,22 @@
   margin-top: 10px;
 }
 
-/* .modal-group .hint-text {
-  text-align: center;
-  padding-top: 10px;
+.modal {
+  padding: 0 !important;
 }
 
-.modal-group .close {
-  position: absolute;
-  top: -5px;
-  right: -5px;
+.modal .modal-group-stuff {
+  width: 70%;
+  max-width: none;
+  height: auto;
 }
 
-.modal-group .hint-text a {
-  color: #999;
+.modal .modal-content {
+  height: 100%;
+  border: 0;
 }
 
-.trigger-btn {
-  display: inline-block;
-  margin: 100px auto;
-} */
+.modal .modal-body {
+  overflow-y: auto;
+}
 
