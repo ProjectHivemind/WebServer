@@ -8,6 +8,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+const API_URL = "localhost:4321"
+
 func LoginPage(c *gin.Context) {
 	// Check if user is already has a valid session
 	token, _ := c.Cookie("token")
@@ -41,7 +43,7 @@ func Logout(c *gin.Context) {
 
 	if check {
 		c.SetCookie("token", "", 0, "/", "localhost", false, false)
-		middleware.DeAuthorize()
+		middleware.DeAuthorize(token)
 	}
 	c.HTML(http.StatusTemporaryRedirect, "login.html", nil)
 }
