@@ -9,7 +9,7 @@
     });
 
     $('#create-group-confirm').click(function () {
-        let selected = $('#create-group-table').DataTable().rows({search: 'applied', selected: true}).data();
+        let selected = $('#create-group-table').DataTable().rows({ selected: true }).data();
 
         $("#add-group-modal").scrollTop(0);
         $("html, body").scrollTop($("#add-group-modal").offset().top);
@@ -42,7 +42,7 @@
 
         $.ajax({
             type: 'POST',
-            url: 'http://192.168.215.138:1337/api/group',
+            url: 'http://192.168.0.36:1337/api/group',
             dataType: 'json',
             data: JSON.stringify(request),
             success: function (msg) {
@@ -88,22 +88,29 @@
     });
 
     $('#table').DataTable({
-        ajax: {
-            url: "http://192.168.215.138:1337/api/group",
-            dataSrc: function (json) {
-                for (var i = 0; i < json.length; i++) {
-                    json[i]["nummembers"] = json[i].implants.length;
-                    json[i]["editbuttons"] = '<div role="group" class="btn-group btn-group-sm"><button class="btn btn-primary group-action-button" type="button" data-target="#loading-modal" data-toggle="modal"><i class="fas fa-info-circle"></i></button><button class="btn btn-danger group-action-button" type="button" data-target="#delete-group-modal" data-toggle="modal"><i class="far fa-trash-alt"></i></button><button class="btn btn-warning group-action-button edit-group-button" type="button"><i class="far fa-edit"></i></button></div>';
-                }
-                group_info = json;
-                return json;
-            },
+        ajax: function (data, callback, settings) {
+            $.ajax({
+                url: "http://192.168.0.36:1337/api/group",
+                dataType: "json",
+                success: function (response) {
+                    if (response === null) {
+                        callback({ "data": [] });
+                    } else {
+                        for (var i = 0; i < response.length; i++) {
+                            response[i]["nummembers"] = response[i].implants.length;
+                            response[i]["editbuttons"] = '<div role="group" class="btn-group btn-group-sm"><button class="btn btn-primary group-action-button" type="button" data-target="#loading-modal" data-toggle="modal"><i class="fas fa-info-circle"></i></button><button class="btn btn-danger group-action-button" type="button" data-target="#delete-group-modal" data-toggle="modal"><i class="far fa-trash-alt"></i></button><button class="btn btn-warning group-action-button edit-group-button" type="button"><i class="far fa-edit"></i></button></div>';
+                        }
+                        group_info = response;
+                        callback({ "data": response });
+                    }
+                },
+            })
         },
         columns: [
-            {"data": "uuid"},
-            {"data": "groupname"},
-            {"data": "nummembers"},
-            {"data": "editbuttons"},
+            { "data": "uuid" },
+            { "data": "groupname" },
+            { "data": "nummembers" },
+            { "data": "editbuttons" },
         ],
         colReorder: true,
         dom: 'PBlfrtip',
@@ -125,6 +132,14 @@
             style: 'multi'
         },
         buttons: [
+            {
+                text: 'Select all filtered',
+                action: function () {
+                    $('#create-group-table').DataTable().rows({
+                        search: 'applied' 
+                    }).select();
+                }
+            },
             'selectAll',
             'selectNone',
             'colvis'
@@ -136,18 +151,27 @@
             }
         },
         colReorder: true,
-        "ajax": {
-            "url": "http://192.168.215.138:1337/api/implantswithcallbacks",
-            dataSrc: ""
+        ajax: function (data, callback, settings) {
+            $.ajax({
+                url: "http://192.168.0.36:1337/api/implantswithcallbacks",
+                dataType: "json",
+                success: function (response) {
+                    if (response === null) {
+                        callback({ "data": [] });
+                    } else {
+                        callback({ "data": response });
+                    }
+                },
+            })
         },
         columns: [
-            {"data": "implant.uuid"},
-            {"data": "implant.primaryip"},
-            {"data": "implant.hostname"},
-            {"data": "implanttype.implantname"},
-            {"data": "implanttype.implantversion"},
-            {"data": "implant.implantos"},
-            {"data": "callback.lastcall"},
+            { "data": "implant.uuid" },
+            { "data": "implant.primaryip" },
+            { "data": "implant.hostname" },
+            { "data": "implanttype.implantname" },
+            { "data": "implanttype.implantversion" },
+            { "data": "implant.implantos" },
+            { "data": "callback.lastcall" },
             {
                 "data": "implant.supportedmodules",
                 render: {
@@ -180,7 +204,7 @@
                 for (var j = 0; j < selected_group.implants.length; j++) {
                     $.ajax({
                         type: 'GET',
-                        url: `http://192.168.215.138:1337/api/implant/${selected_group.implants[j]}`,
+                        url: `http://192.168.0.36:1337/api/implant/${selected_group.implants[j]}`,
                         success: function (msg) {
                             group_implants.push(JSON.parse(msg));
                         },
@@ -193,13 +217,13 @@
                 $('#loading-modal').modal('hide')
                 $('#info-group-modal').modal('show')
             }
-            callback({data: group_implants})
+            callback({ data: group_implants })
         },
         columns: [
-            {"data": "uuid"},
-            {"data": "primaryip"},
-            {"data": "hostname"},
-            {"data": "implantos"},
+            { "data": "uuid" },
+            { "data": "primaryip" },
+            { "data": "hostname" },
+            { "data": "implantos" },
             {
                 "data": "supportedmodules",
                 render: {

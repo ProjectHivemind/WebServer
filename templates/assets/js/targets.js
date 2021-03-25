@@ -1,9 +1,18 @@
 (function ($) {
-    var table = $('#table').DataTable({
+    $('#table').DataTable({
         colReorder: true,
-        "ajax": {
-            "url": "http://192.168.215.138:1337/api/implantswithcallbacks",
-            dataSrc: ""
+        ajax: function (data, callback, settings) {
+            $.ajax({
+                url: "http://192.168.0.36:1337/api/implantswithcallbacks",
+                dataType: "json",
+                success: function (response) {
+                    if (response === null) {
+                        callback({ "data": [] });
+                    } else {
+                        callback({ "data": response });
+                    }
+                },
+            })
         },
         "columns": [
             { "data": "implant.uuid" },
@@ -27,7 +36,10 @@
         language: {
             processing: '<i class="fa fa-spinner fa-spin fa-2x fa-fw"></i>'
         },
-        dom: 'Plfrtip',
+        buttons: [
+            'colvis'
+        ],
+        dom: 'PBlfrtip',
         responsive: true,
         "autoWidth": false,
         columnDefs: [{
