@@ -1,12 +1,17 @@
 package routehandler
 
 import (
+	"io/ioutil"
 	"net/http"
+	"net/url"
+	"strconv"
 	"strings"
 
 	"github.com/ProjectHivemind/WebGUI/pkg/middleware"
 	"github.com/gin-gonic/gin"
 )
+
+const API_URL = "http://127.0.0.1:4321"
 
 func LoginPage(c *gin.Context) {
 	// Check if user is already has a valid session
@@ -41,17 +46,17 @@ func Logout(c *gin.Context) {
 
 	if check {
 		c.SetCookie("token", "", 0, "/", "localhost", false, false)
-		middleware.DeAuthorize()
+		middleware.DeAuthorize(token)
 	}
 	c.HTML(http.StatusTemporaryRedirect, "login.html", nil)
 }
 
 func LoadPage(c *gin.Context) {
-	token, _ := c.Cookie("token")
-	check := middleware.Validate(token)
-	if !check {
-		c.Redirect(http.StatusTemporaryRedirect, "/login.html")
-	}
+	// token, _ := c.Cookie("token")
+	// check := middleware.Validate(token)
+	// if !check {
+	// 	c.Redirect(http.StatusTemporaryRedirect, "/login.html")
+	// }
 
 	// parse path in this function
 	path := c.Request.URL.Path
@@ -63,7 +68,13 @@ func LoadPage(c *gin.Context) {
 
 	switch pathArr[1] {
 	case "api":
-		FowardAPICall(path)
+		form := c.Request.Form
+		object, err := FowardAPICall(c.Request.Method, path, form)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, nil)
+		}
+		c.JSON(http.StatusOK, string(object))
+		return
 	case "dashboard.html", "dashboard", "index.html":
 		c.HTML(http.StatusOK, "index.html", nil)
 		return
@@ -102,6 +113,23 @@ func LoadPage(c *gin.Context) {
 
 }
 
-func FowardAPICall(path string) {
+func FowardAPICall(method, path string, form url.Values) ([]byte, error) {
 	// Make request to the internal restapi
+	hc := http.Client{}
+	req, err := http.NewRequest(method, API_URL+path, strings.NewReader(form.Encode()))
+	if form != nil {
+		req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+		req.Header.Add("Content-Length", strconv.Itoa(len(form.Encode())))
+	}
+	resp, err := hc.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	return body, nil
 }
