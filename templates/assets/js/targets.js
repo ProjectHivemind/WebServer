@@ -3,7 +3,7 @@
         colReorder: true,
         ajax: function (data, callback, settings) {
             $.ajax({
-                url: "http://192.168.0.36:1337/api/implantswithcallbacks",
+                url: "/api/implantswithcallbacks",
                 dataType: "json",
                 success: function (response) {
                     if (response === null) {

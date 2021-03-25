@@ -42,7 +42,7 @@
 
         $.ajax({
             type: 'POST',
-            url: 'http://192.168.0.36:1337/api/group',
+            url: '/api/group',
             dataType: 'json',
             data: JSON.stringify(request),
             success: function (msg) {
@@ -90,7 +90,7 @@
     $('#table').DataTable({
         ajax: function (data, callback, settings) {
             $.ajax({
-                url: "http://192.168.0.36:1337/api/group",
+                url: "/api/group",
                 dataType: "json",
                 success: function (response) {
                     if (response === null) {
@@ -153,7 +153,7 @@
         colReorder: true,
         ajax: function (data, callback, settings) {
             $.ajax({
-                url: "http://192.168.0.36:1337/api/implantswithcallbacks",
+                url: "/api/implantswithcallbacks",
                 dataType: "json",
                 success: function (response) {
                     if (response === null) {
@@ -204,9 +204,9 @@
                 for (var j = 0; j < selected_group.implants.length; j++) {
                     $.ajax({
                         type: 'GET',
-                        url: `http://192.168.0.36:1337/api/implant/${selected_group.implants[j]}`,
+                        url: `/api/implant/${selected_group.implants[j]}`,
                         success: function (msg) {
-                            group_implants.push(JSON.parse(msg));
+                            group_implants.push(msg);
                         },
                         error: function (resp) {
                             console.log("Error in request for implant");

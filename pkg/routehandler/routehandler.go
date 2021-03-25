@@ -1,6 +1,8 @@
 package routehandler
 
 import (
+	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -12,6 +14,13 @@ import (
 )
 
 const API_URL = "http://127.0.0.1:4321"
+
+type ForwardInfo struct {
+	method string
+	path   string
+	form   url.Values
+	body   []byte
+}
 
 func LoginPage(c *gin.Context) {
 	// Check if user is already has a valid session
@@ -68,12 +77,45 @@ func LoadPage(c *gin.Context) {
 
 	switch pathArr[1] {
 	case "api":
-		form := c.Request.Form
-		object, err := FowardAPICall(c.Request.Method, path, form)
+		var forwardInfo ForwardInfo
+		forwardInfo.form = url.Values{}
+		forwardInfo.path = path
+		forwardInfo.method = c.Request.Method
+
+		if len(pathArr) > 2 && forwardInfo.method == "POST" {
+			if pathArr[2] == "operator" {
+				forwardInfo.form.Set("username", c.Request.FormValue("username"))
+				forwardInfo.form.Set("password", c.Request.FormValue("password"))
+			} else if pathArr[2] == "session" {
+				forwardInfo.form.Set("username", c.Request.FormValue("username"))
+			}
+
+			forwardInfo.body, _ = ioutil.ReadAll(c.Request.Body)
+		}
+
+		object, err := FowardAPICall(forwardInfo)
+		fmt.Print(string(object))
 		if err != nil {
 			c.JSON(http.StatusBadRequest, nil)
 		}
-		c.JSON(http.StatusOK, string(object))
+
+		var jsonConvArr []interface{}
+		err = json.Unmarshal(object, &jsonConvArr)
+		if err == nil {
+			c.JSON(http.StatusOK, jsonConvArr)
+			return
+		}
+
+		var jsonConv interface{}
+		err = json.Unmarshal(object, &jsonConv)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, nil)
+		} else {
+			c.JSON(http.StatusOK, jsonConv)
+			return
+		}
+
+		c.JSON(http.StatusBadRequest, nil)
 		return
 	case "dashboard.html", "dashboard", "index.html":
 		c.HTML(http.StatusOK, "index.html", nil)
@@ -113,13 +155,27 @@ func LoadPage(c *gin.Context) {
 
 }
 
-func FowardAPICall(method, path string, form url.Values) ([]byte, error) {
+func FowardAPICall(forwardInfo ForwardInfo) ([]byte, error) {
 	// Make request to the internal restapi
 	hc := http.Client{}
-	req, err := http.NewRequest(method, API_URL+path, strings.NewReader(form.Encode()))
-	if form != nil {
+	var req *http.Request
+	var err error
+
+	if forwardInfo.method != "POST" {
+		req, err = http.NewRequest(forwardInfo.method, API_URL+forwardInfo.path, nil)
+	} else if len(forwardInfo.form.Get("username")) != 0 {
+		req, err = http.NewRequest(forwardInfo.method, API_URL+forwardInfo.path, strings.NewReader(forwardInfo.form.Encode()))
 		req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
-		req.Header.Add("Content-Length", strconv.Itoa(len(form.Encode())))
+		req.Header.Add("Content-Length", strconv.Itoa(len(forwardInfo.form.Encode())))
+	} else if len(forwardInfo.body) != 0 {
+		req, err = http.NewRequest(forwardInfo.method, API_URL+forwardInfo.path, strings.NewReader(string(forwardInfo.body)))
+		req.Header.Add("Content-Length", strconv.Itoa(len(string(forwardInfo.body))))
+	} else {
+		err = fmt.Errorf("request not valid")
+	}
+
+	if err != nil {
+		return nil, err
 	}
 	resp, err := hc.Do(req)
 	if err != nil {
