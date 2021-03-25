@@ -61,11 +61,11 @@ func Logout(c *gin.Context) {
 }
 
 func LoadPage(c *gin.Context) {
-	// token, _ := c.Cookie("token")
-	// check := middleware.Validate(token)
-	// if !check {
-	// 	c.Redirect(http.StatusTemporaryRedirect, "/login.html")
-	// }
+	token, _ := c.Cookie("token")
+	check := middleware.Validate(token)
+	if !check {
+		c.Redirect(http.StatusTemporaryRedirect, "/login.html")
+	}
 
 	// parse path in this function
 	path := c.Request.URL.Path
