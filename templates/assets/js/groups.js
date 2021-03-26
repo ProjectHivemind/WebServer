@@ -206,7 +206,7 @@
                         type: 'GET',
                         url: `/api/implant/${selected_group.implants[j]}`,
                         success: function (msg) {
-                            group_implants.push(msg);
+                            group_implants.push(JSON.parse(msg));
                         },
                         error: function (resp) {
                             console.log("Error in request for implant");

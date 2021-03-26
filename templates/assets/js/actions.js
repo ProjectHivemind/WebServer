@@ -4,7 +4,7 @@
     $('#table').DataTable({
         ajax: function (data, callback, settings) {
             $.ajax({
-                url: "http://192.168.215.138:1337/api/storedaction",
+                url: "/api/storedaction",
                 dataType: "json",
                 success: function (response) {
                     if (response === null) {
