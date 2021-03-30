@@ -149,6 +149,9 @@ func LoadPage(c *gin.Context) {
 		break
 	case "profile.html", "profile":
 		c.HTML(http.StatusOK, "groups.html", nil)
+		break
+	case "staging.html", "staging":
+		c.HTML(http.StatusOK, "staging.html", nil)
 	default:
 		break
 	}

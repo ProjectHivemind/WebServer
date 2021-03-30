@@ -1,0 +1,161 @@
+.delete-icon {
+  width: 100px;
+  height: 100px;
+  color: var(--danger);
+  text-align: center;
+}
+
+.group-action-button {
+  width: 35px;
+  height: 35px;
+}
+
+.modal-delete-dialog {
+  color: #636363;
+}
+
+.modal-delete-dialog .modal-content {
+  padding: 20px;
+  border-radius: 5px;
+  border: none;
+  text-align: center;
+  font-size: 14px;
+}
+
+.modal-delete-dialog .modal-header {
+  border-bottom: none;
+  position: relative;
+}
+
+.modal-delete-dialog h4 {
+  text-align: center;
+  font-size: 26px;
+  margin: 30px 0 -10px;
+}
+
+.modal-delete-dialog .close {
+  position: absolute;
+  top: -5px;
+  right: -2px;
+}
+
+.modal-delete-dialog .modal-body {
+  color: #999;
+}
+
+.modal-delete-dialog .modal-footer {
+  border: none;
+  text-align: center;
+  border-radius: 5px;
+  font-size: 13px;
+  padding: 10px 15px 25px;
+}
+
+.modal-delete-dialog .modal-footer a {
+  color: #999;
+}
+
+.modal-delete-dialog .btn, .modal-delete-dialog .btn:active {
+  color: #fff;
+  border-radius: 4px;
+  background: #60c7c1;
+  text-decoration: none;
+  transition: all 0.4s;
+  line-height: normal;
+  min-width: 120px;
+  border: none;
+  min-height: 40px;
+  border-radius: 3px;
+  margin: 0 5px;
+}
+
+.modal-delete-dialog .btn-secondary {
+  background: #c1c1c1;
+}
+
+.modal-delete-dialog .btn-secondary:hover, .modal-delete-dialog .btn-secondary:focus {
+  background: #a8a8a8;
+}
+
+.modal-delete-dialog .btn-danger {
+  background: #f15e5e;
+}
+
+.modal-delete-dialog .btn-danger:hover, .modal-delete-dialog .btn-danger:focus {
+  background: #ee3535;
+}
+
+.modal-group {
+  width: 350px;
+}
+
+.modal-group .modal-content {
+  padding: 20px;
+  border-radius: 1px;
+  border: none;
+}
+
+.modal-group .modal-header {
+  border-bottom: none;
+  position: relative;
+  justify-content: center;
+}
+
+.modal-group h4 {
+  text-align: center;
+  font-size: 26px;
+}
+
+.modal-group .form-group {
+  margin-bottom: 20px;
+}
+
+.modal-group .form-control, .modal-group {
+  min-height: 40px;
+  border-radius: 30px;
+  font-size: 15px;
+  transition: all 0.5s;
+}
+
+.modal-group .form-control {
+  font-size: 13px;
+  margin-top: 10px;
+}
+
+.modal {
+  padding: 0 !important;
+}
+
+.modal .modal-group-stuff {
+  width: 70%;
+  max-width: none;
+  height: 95%;
+}
+
+.modal .modal-content {
+  height: 100%;
+  border: 0;
+}
+
+.modal .modal-body {
+  overflow-y: auto;
+}
+
+.loading-modal .close {
+  display: none;
+}
+
+.select {
+  max-width: none;
+  width: 100%;
+}
+
+.custom-col {
+  row-gap: 10px;
+  display: grid;
+}
+
+.first-col {
+  width: fit-content;
+}
+

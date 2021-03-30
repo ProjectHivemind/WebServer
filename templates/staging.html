@@ -11,9 +11,8 @@
     <link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
     <link rel="stylesheet" href="assets/fonts/material-icons.min.css">
     <link rel="stylesheet" href="assets/fonts/fontawesome5-overrides.min.css">
-    <link rel="stylesheet" href="assets/css/actions.css">
-    <link rel="stylesheet" href="assets/css/bootstrap-select.min.css">
     <link rel="stylesheet" href="assets/css/datatables.min.css">
+    <link rel="stylesheet" href="assets/css/staging.css">
 </head>
 
 <body id="page-top">
@@ -29,8 +28,8 @@
                     <li class="nav-item"><a class="nav-link" href="profile.html"><i class="fas fa-user"></i><span>Profile</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="targets.html"><i class="material-icons">devices_other</i><span>Targets</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="groups.html"><i class="material-icons" style="width: auto;height: auto;">group</i><span>Groups</span></a></li>
-                    <li class="nav-item"><a class="nav-link active" href="actions.html"><i class="material-icons" style="width: auto;height: auto;">sd_storage</i><span>Actions</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="staging.html"><i class="material-icons" style="width: auto;height: auto;">cloud_upload</i><span>Staging</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="actions.html"><i class="material-icons" style="width: auto;height: auto;">sd_storage</i><span>Actions</span></a></li>
+                    <li class="nav-item"><a class="nav-link active" href="staging.html"><i class="material-icons" style="width: auto;height: auto;">cloud_upload</i><span>Staging</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="logout"><i class="fas fa-user" style="width: auto;height: auto;"></i><span>Logout</span></a></li>
                 </ul>
                 <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
@@ -95,15 +94,157 @@
                     </div>
                 </nav>
                 <div class="container-fluid">
-                    <h3 class="text-dark mb-4">Actions</h3>
+                    <h3 class="text-dark mb-4">Staging and Execution</h3>
                     <div class="card shadow">
                         <div class="card-header py-3">
                             <div class="row">
                                 <div class="col">
-                                    <p class="text-primary m-0 font-weight-bold">Stored Actions</p>
+                                    <p class="text-primary m-0 font-weight-bold">Staged Actions</p>
                                 </div>
-                                <div class="col" style="text-align: right;"><button class="btn btn-primary" type="button" data-target="#add-action-modal" data-toggle="modal">Create Action</button></div>
+                                <div class="col" style="text-align: right;"><button class="btn btn-primary" type="button" data-target="#stage-action-modal" data-toggle="modal">Stage Action</button></div>
                             </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive table mt-2" role="grid" aria-describedby="dataTable_info">
+                                <table class="table my-0" id="table">
+                                    <thead>
+                                        <tr>
+                                            <th>UUID</th>
+                                            <th>Primary IP</th>
+                                            <th>Hostname</th>
+                                            <th>OS</th>
+                                            <th>Module</th>
+                                            <th>Function</th>
+                                            <th>Arguments</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td><strong>UUID<br></strong></td>
+                                            <td><strong>Primary IP</strong><br></td>
+                                            <td><strong>Hostname</strong><br></td>
+                                            <td><strong>OS</strong><br></td>
+                                            <td><strong>Module<br></strong></td>
+                                            <td><strong>Function<br></strong></td>
+                                            <td><strong>Arguments<br></strong></td>
+                                            <td><strong>Actions</strong><br></td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                            <div class="modal fade" role="dialog" tabindex="-1" id="stage-action-modal">
+                                <div class="modal-dialog modal-group-stuff" role="document">
+                                    <div class="modal-content" id="add-group-modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">Stage Action</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="alert alert-success fade show" role="alert" id="action-created-successful"><span><strong>Alert</strong>&nbsp;Action Staged Successfully.</span></div>
+                                            <div class="custom-col"><label>Actions</label>
+                                                <div class="table-responsive table mt-2" role="grid" aria-describedby="dataTable_info">
+                                                    <table class="table my-0" id="stage-action-table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>UUID</th>
+                                                                <th>Module</th>
+                                                                <th>Function</th>
+                                                                <th>Arguments</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody></tbody>
+                                                        <tfoot>
+                                                            <tr>
+                                                                <td><strong>UUID<br></strong></td>
+                                                                <td><strong>Module<br></strong></td>
+                                                                <td><strong>Function<br></strong></td>
+                                                                <td><strong>Arguments<br></strong></td>
+                                                            </tr>
+                                                        </tfoot>
+                                                    </table>
+                                                </div><label for="#dynamic-fields">Targets</label>
+                                                <div class="row">
+                                                    <div class="col"><label>Groups</label>
+                                                        <div class="table-responsive table mt-2" role="grid" aria-describedby="dataTable_info">
+                                                            <table class="table table-striped my-0" id="stage-group-table">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>UUID</th>
+                                                                        <th>Name</th>
+                                                                        <th>Number of Members</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr></tr>
+                                                                    <tr></tr>
+                                                                </tbody>
+                                                                <tfoot>
+                                                                    <tr>
+                                                                        <td><strong>UUID</strong><br></td>
+                                                                        <td><strong>Name</strong></td>
+                                                                        <td><strong>Number of Members</strong></td>
+                                                                    </tr>
+                                                                </tfoot>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col"><label>Implants</label>
+                                                        <div class="table-responsive mt-2 display table" role="grid" aria-describedby="dataTable_info">
+                                                            <table class="table table-striped my-0 display" id="stage-target-table">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>UUID</th>
+                                                                        <th>Primary IP</th>
+                                                                        <th>Hostname</th>
+                                                                        <th>OS</th>
+                                                                        <th>Supported Modules</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody id="tableBody"></tbody>
+                                                                <tfoot>
+                                                                    <tr>
+                                                                        <td><strong>UUID</strong><br></td>
+                                                                        <td><strong>Primary IP</strong></td>
+                                                                        <td><strong>Hostname</strong></td>
+                                                                        <td><strong>OS</strong></td>
+                                                                        <td><strong>Supported Modules</strong><br></td>
+                                                                    </tr>
+                                                                </tfoot>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer justify-content-center"><button class="btn btn-light" type="button" data-dismiss="modal">Close</button><button class="btn btn-primary" id="stage-action-confirm" type="submit">Create</button></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal fade" role="dialog" tabindex="-1" id="delete-action-modal">
+                                <div class="modal-dialog modal-delete-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <div class="col" style="text-align: center;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icon-tabler-circle-x delete-icon">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                    <circle cx="12" cy="12" r="9"></circle>
+                                                    <path d="M10 10l4 4m0 -4l-4 4"></path>
+                                                </svg>
+                                                <h4 class="modal-title" style="text-align: center;">Are you sure?</h4>
+                                            </div><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>Do you really want to delete this group? This process cannot be undone.</p>
+                                        </div>
+                                        <div class="modal-footer justify-content-center"><button class="btn btn-light btn-secondary" type="button" data-dismiss="modal">Close</button><button class="btn btn-primary btn-danger" id="delete-action-confirm" type="button">Delete</button></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card shadow">
+                        <div class="card-header py-3">
+                            <p class="text-primary m-0 font-weight-bold">Executed Actions</p>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive table mt-2" role="grid" aria-describedby="dataTable_info">
@@ -129,65 +270,6 @@
                                     </tfoot>
                                 </table>
                             </div>
-                            <div class="modal fade" role="dialog" tabindex="-1" id="add-action-modal">
-                                <div class="modal-dialog modal-group-stuff" role="document">
-                                    <div class="modal-content" id="add-group-modal-content">
-                                        <div class="modal-header">
-                                            <h4 class="modal-title">Create New Group</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div class="alert alert-success fade show" role="alert" id="action-created-successful"><span><strong>Alert</strong>&nbsp;Action Creation Successful.</span></div>
-                                            <div class="alert alert-danger fade show" role="alert" id="no-action-name-alert"><span><strong>Alert</strong>&nbsp;No Action name given.</span></div>
-                                            <div class="alert alert-danger fade show" role="alert" id="missing-parameters-alert"><span><strong>Alert</strong>&nbsp;Missing required parameters</span></div>
-                                            <div class="custom-col">
-                                                <div class="row">
-                                                    <div class="col col-md-3"><label class="col-form-label" for="#action-name-input">Action Name</label></div>
-                                                    <div class="col"><input type="text" id="action-name-input" class="form-control" placeholder="Action Name"></div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col col-md-3"><label class="col-form-label" for="#module-select">Module</label></div>
-                                                    <div class="col"><select id="module-select" title="Module" data-live-search="true" data-width="100%">
-                                                            <option value=""></option>
-                                                            <option value=""></option>
-                                                            <option value=""></option>
-                                                        </select></div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col col-md-3"><label class="col-form-label" for="#module-function-select">Module Function&nbsp;</label></div>
-                                                    <div class="col"><select id="module-function-select" title="Module Function" data-live-search="true" data-width="100%"></select></div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col col-md-3"><label class="col-form-label" for="#dynamic-fields">Parameters</label></div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col col-md-3"></div>
-                                                    <div class="col custom-col" id="dynamic-fields"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer justify-content-center"><button class="btn btn-light" type="button" data-dismiss="modal">Close</button><button class="btn btn-primary" id="create-action-confirm" type="submit">Create</button></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal fade" role="dialog" tabindex="-1" id="delete-action-modal">
-                                <div class="modal-dialog modal-delete-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <div class="col" style="text-align: center;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icon-tabler-circle-x delete-icon">
-                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                    <circle cx="12" cy="12" r="9"></circle>
-                                                    <path d="M10 10l4 4m0 -4l-4 4"></path>
-                                                </svg>
-                                                <h4 class="modal-title" style="text-align: center;">Are you sure?</h4>
-                                            </div><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <p>Do you really want to delete this group? This process cannot be undone.</p>
-                                        </div>
-                                        <div class="modal-footer justify-content-center"><button class="btn btn-light btn-secondary" type="button" data-dismiss="modal">Close</button><button class="btn btn-primary btn-danger" id="delete-action-confirm" type="button">Delete</button></div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -205,9 +287,8 @@
     <script src="assets/js/bs-init.js"></script>
     <script src="assets/js/datatables.min.js"></script>
     <script src="assets/js/jquery.easing.js"></script>
-    <script src="assets/js/bootstrap-select.min.js"></script>
     <script src="assets/js/theme.js"></script>
-    <script src="assets/js/actions.js"></script>
+    <script src="assets/js/staging.js"></script>
 </body>
 
 </html>

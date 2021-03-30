@@ -1,5 +1,30 @@
 (function ($) {
     let module_info = ''; //global variable
+    let row_to_remove = ''; //global variable
+    let modulefuncs = [];
+
+    $(document).on('shown.bs.modal', '#delete-action-modal', function (event) {
+        row_to_remove = $(event.relatedTarget);
+    });
+
+    $('#delete-action-confirm').click(function () {
+        var name = row_to_remove.parents("tr").find("td:first").text();
+        console.log(name);
+        var api_url = `/api/storedaction/${name}`
+        $.ajax({
+            url: api_url,
+            type: "delete",
+            success: function (response) {
+
+            },
+            error: function (xhr) {
+                console.log("Error deleting action");
+            }
+        });
+        $('#delete-action-modal').modal('toggle');
+        $('#table').DataTable().ajax.reload();
+        $('#table').DataTable().searchPanes.rebuildPane();
+    });
 
     $('#table').DataTable({
         ajax: function (data, callback, settings) {
@@ -11,7 +36,7 @@
                         callback({ "data": [] });
                     } else {
                         for (var i = 0; i < response.length; i++) {
-                            response[i]["editbuttons"] = '<div role="group" class="btn-group btn-group-sm"><button class="btn btn-primary group-action-button" type="button" data-target="#loading-modal" data-toggle="modal"><i class="fas fa-info-circle"></i></button><button class="btn btn-danger group-action-button" type="button" data-target="#delete-group-modal" data-toggle="modal"><i class="far fa-trash-alt"></i></button><button class="btn btn-warning group-action-button edit-group-button" type="button"><i class="far fa-edit"></i></button></div>';
+                            response[i]["editbuttons"] = '<div role="group" class="btn-group btn-group-sm"><button class="btn btn-danger group-action-button" type="button" data-target="#delete-action-modal" data-toggle="modal"><i class="far fa-trash-alt"></i></button></div>';
                         }
                         module_info = response;
                         callback({ "data": response });
@@ -23,7 +48,7 @@
             { "data": "uuid" },
             { "data": "moduletorun" },
             { "data": "modulefunc" },
-            { "data": "arguments" },
+            {"data": "arguments"},
             { "data": "editbuttons" },
         ],
         colReorder: true,
@@ -37,7 +62,137 @@
             searchPanes: {
                 show: true
             },
-            targets: [0, 1, 2,3,4]
+            targets: [0, 1, 2]
+        },
+        {
+            searchPanes: {
+                show: false
+            },
+            targets: [3, 4]
         }]
     });
+
+    $('select').selectpicker();
+
+    $('#module-select').on('change', function (e) {
+        $('#create-action-confirm').attr('disabled', '');
+        $('#dynamic-fields').empty();
+        $('#module-function-select').find('option').remove();
+
+        $.ajax({
+            url: `/api/modulefunc/${this.value}`,
+            type: "get",
+            success: function (response) {
+                modulefuncs = response;
+                for (var i = 0; i < response.length; i++) {
+                    $('#module-function-select').append(`<option data-subtext="${response[i]["modulefuncdesc"]}" val="${response[i]["modulefuncname"]}">${response[i]["modulefuncname"]}</option>`);
+                }
+                $('#module-function-select').removeAttr('disabled');
+                $("#module-function-select").selectpicker("refresh");
+            },
+            error: function (xhr) {
+                console.log("Error getting function");
+            }
+        });
+    });
+
+    $('#module-function-select').on('change', function (e) {
+        $('#dynamic-fields').empty();
+        $('#create-action-confirm').removeAttr('disabled');
+
+        for (var i = 0; i < modulefuncs.length; i++) {
+            if (modulefuncs[i]["modulefuncname"] == this.value) {
+                for (var j = 0; j < modulefuncs[i]["parameternames"].length; j++) {
+                    if (modulefuncs[i]["parametertypes"][j] == "String") {
+                        console.log(modulefuncs[i]["parameternames"][j] + " is a String");
+                        $('#dynamic-fields').append(`<input class="form-control" type="text" id="${modulefuncs[i]["parameternames"][j]}" placeholder="${modulefuncs[i]["parameternames"][j]}" />`);
+                    }
+                    else if (modulefuncs[i]["parametertypes"][j] == "Double") {
+                        console.log(modulefuncs[i]["parameternames"][j] + " is a Double");
+                        $('#dynamic-fields').append(`<input class="form-control" type="number" id="${modulefuncs[i]["parameternames"][j]}" placeholder="${modulefuncs[i]["parameternames"][j]}" min="0" step="any"/>`);
+                    }
+                    else if (modulefuncs[i]["parametertypes"][j] == "Int") {
+                        console.log(modulefuncs[i]["parameternames"][j] + " is an Int");
+                        $('#dynamic-fields').append(`<input class="form-control" type="number" id="${modulefuncs[i]["parameternames"][j]}" placeholder="${modulefuncs[i]["parameternames"][j]}" min="0" step="1" />`);
+                    }
+                }
+            }
+        }
+    });
+
+    $(document).on('shown.bs.modal', '#add-action-modal', function (event) {
+        $('#dynamic-fields').empty();
+        $('#module-select').find('option').remove();
+        $('#module-function-select').find('option').remove();
+        $("#module-select").selectpicker("refresh");
+        $('#module-function-select').attr('disabled', '');
+        $("#module-function-select").selectpicker("refresh");
+        $('#create-action-confirm').attr('disabled', '');
+        $('#action-name-input').val('');
+        $('#create-action-confirm').attr('disabled', '');
+
+        $.ajax({
+            url: "/api/module",
+            type: "get",
+            success: function (response) {
+                modules = response;
+                for (var i = 0; i < response.length; i++) {
+                    $('#module-select').append(`<option data-subtext="${response[i]["moduledesc"]}" val="${response[i]["modulename"]}">${response[i]["modulename"]}</option>`);
+                }
+                $("#module-select").selectpicker("refresh");
+            },
+            error: function (xhr) {
+                console.log("Error getting modules");
+            }
+        });
+    });
+
+    $('#create-action-confirm').click(function () {
+        $("#add-action-modal").scrollTop(0);
+        $("html, body").scrollTop($("#add-action-modal").offset().top);
+
+        if (!$('#action-name-input').val()) {
+            $('#no-action-name-alert').show();
+            setTimeout(function () {
+                $('#no-action-name-alert').hide();
+            }, 4000);
+            return;
+        }
+
+        var request = {
+            uuid: '',
+            moduletorun: $('#module-select').val(),
+            modulefunc: $('#module-function-select').val(),
+            arguments: []
+        }
+        var temp = {}
+        for (var i = 0; i < modulefuncs.length; i++) {
+            if (modulefuncs[i]["modulefuncname"] == $('#module-function-select').val()) {
+                for (var j = 0; j < modulefuncs[i]["parameternames"].length; j++) {
+                    var name = `${modulefuncs[i]["parameternames"][j]}`;
+                    temp[name] = $(`#${name}`).val();
+                }
+                break;
+            }
+        }
+        request.arguments.push(JSON.stringify(temp));
+        $.ajax({
+            type: 'POST',
+            url: '/api/storedaction',
+            dataType: 'json',
+            data: JSON.stringify(request),
+            success: function (msg) {
+                $('#action-created-successful').show();
+                setTimeout(function () {
+                    $('#action-created-successful').hide();
+                }, 4000);
+            }
+        });
+        $('#table').DataTable().ajax.reload();
+        $('#table').DataTable().searchPanes.rebuildPane();
+    });
+
+    $('#no-action-name-alert').hide();
+    $('#missing-parameters-alert').hide();
+    $('#action-created-successful').hide();
 })(jQuery); // End of use strict

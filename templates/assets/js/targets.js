@@ -1,5 +1,5 @@
 (function ($) {
-    $('#table').DataTable({
+    let table = $('#table').DataTable({
         colReorder: true,
         ajax: function (data, callback, settings) {
             $.ajax({
@@ -46,7 +46,13 @@
             searchPanes: {
                 show: true,
             },
-            targets: [0, 1, 2, 3, 4, 5, 6, 7]
+            targets: [0, 1, 2, 3, 4, 5, 7]
+        },
+        {
+            searchPanes: {
+                show: false
+            },
+            targets: [6]
         }]
     });
 })(jQuery); // End of use strict

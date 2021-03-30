@@ -65,7 +65,7 @@
             if (group_info[i].uuid == uuid) {
                 selected_group = group_info[i];
                 $('#info-group-table').DataTable().ajax.reload();
-                $('#info-group-table').DataTable().searchPanes.rebuildPane()
+                $('#info-group-table').DataTable().searchPanes.rebuildPane();
                 return;
             }
         }
@@ -78,13 +78,15 @@
             url: api_url,
             type: "delete",
             success: function (response) {
-                row_to_remove.parents("tr").remove();
+
             },
             error: function (xhr) {
                 console.log("Error deleting group");
             }
         });
         $('#delete-group-modal').modal('toggle');
+        $('#table').DataTable().ajax.reload();
+        $('#table').DataTable().searchPanes.rebuildPane();
     });
 
     $('#table').DataTable({
@@ -190,7 +192,13 @@
             searchPanes: {
                 show: true,
             },
-            targets: [0, 1, 2, 3, 4, 5, 6, 7]
+            targets: [0, 1, 2, 3, 4, 5, 7]
+        },
+        {
+            searchPanes: {
+                show: false
+            },
+            targets: [6]
         }]
     });
 
@@ -206,7 +214,7 @@
                         type: 'GET',
                         url: `/api/implant/${selected_group.implants[j]}`,
                         success: function (msg) {
-                            group_implants.push(JSON.parse(msg));
+                            group_implants.push(msg);
                         },
                         error: function (resp) {
                             console.log("Error in request for implant");
