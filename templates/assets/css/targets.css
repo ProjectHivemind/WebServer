@@ -1,0 +1,13 @@
+.hiddenRow {
+  padding: 0 !important;
+}
+
+td.details-control {
+  background: url('../../assets/img/dogs/brain-network-coherence.png') no-repeat center center;
+  cursor: pointer;
+}
+
+tr.shown td.details-control {
+  background: url('../../assets/img/dogs/brain-network-coherence.png') no-repeat center center;
+}
+
