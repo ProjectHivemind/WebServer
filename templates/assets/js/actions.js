@@ -161,7 +161,7 @@
             uuid: '',
             module_to_run: $('#module-select').val(),
             module_func: $('#module-function-select').val(),
-            arguments: []
+            arguments: ''
         }
         var temp = {}
         for (var i = 0; i < module_funcs.length; i++) {
@@ -173,7 +173,7 @@
                 break;
             }
         }
-        request.arguments.push(JSON.stringify(temp));
+        request.arguments = JSON.stringify(temp);
         $.ajax({
             type: 'POST',
             url: '/api/storedaction',
