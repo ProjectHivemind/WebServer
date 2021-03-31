@@ -1,8 +1,6 @@
 (function ($) {
     let row_to_remove; //global variable
     let group_info;
-    let action_info = '';
-    let implant_info = '';
     let selected_mods = [];
 
     $(document).on('shown.bs.modal', '#delete-action-modal', function (event) {
@@ -34,25 +32,25 @@
                 dataType: "json",
                 success: function (response) {
                     if (response === null) {
-                        callback({ "data": [] });
+                        callback({ data: [] });
                     } else {
                         for (var i = 0; i < response.length; i++) {
-                            response[i]["editbuttons"] = '<div role="group" class="btn-group btn-group-sm"><button class="btn btn-danger group-action-button" type="button" data-target="#delete-action-modal" data-toggle="modal"><i class="far fa-trash-alt"></i></button></div>';
+                            response[i]["edit_buttons"] = '<div role="group" class="btn-group btn-group-sm"><button class="btn btn-danger group-action-button" type="button" data-target="#delete-action-modal" data-toggle="modal"><i class="far fa-trash-alt"></i></button></div>';
                         }
-                        callback({ "data": response });
+                        callback({ data: response });
                     }
                 },
             })
         },
         columns: [
-            { "data": "stagedactions.id" },
-            { "data": "implant.primaryip" },
-            { "data": "implant.hostname" },
-            { "data": "implant.implantos" },
-            { "data": "storedactions.moduletorun" },
-            { "data": "storedactions.modulefunc" },
+            { data: "staged_action.id" },
+            { data: "implant.primary_ip" },
+            { data: "implant.hostname" },
+            { data: "implant.implant_os" },
+            { data: "stored_action.module_to_run" },
+            { data: "stored_action.module_func" },
             {
-                "data": "storedactions.arguments",
+                data: "stored_action.arguments",
                 render: {
                     _: '[, ]',
                     sp: '[]'
@@ -61,7 +59,7 @@
                     orthogonal: 'sp'
                 }
             },
-            { "data": "editbuttons" },
+            { data: "edit_buttons" },
         ],
         colReorder: true,
         dom: 'PBlfrtip',
@@ -94,21 +92,21 @@
                 dataType: "json",
                 success: function (response) {
                     if (response === null) {
-                        callback({ "data": [] });
+                        callback({ data: [] });
                     } else {
                         for (var i = 0; i < response.length; i++) {
-                            response[i]["nummembers"] = response[i].implants.length;
+                            response[i]["num_members"] = response[i].implants.length;
                         }
                         group_info = response;
-                        callback({ "data": response });
+                        callback({ data: response });
                     }
                 },
             })
         },
         columns: [
-            { "data": "uuid" },
-            { "data": "groupname" },
-            { "data": "nummembers" },
+            { data: "uuid" },
+            { data: "group_name" },
+            { data: "num_members" },
         ],
         colReorder: true,
         dom: 'lfrtip',
@@ -126,21 +124,20 @@
                 url: "/api/implant",
                 success: function (response) {
                     if (response === null) {
-                        callback({ "data": [] });
+                        callback({ data: [] });
                     } else {
-                        implant_info = response;
-                        callback({ "data": response });
+                        callback({ data: response });
                     }
                 },
             })
         },
         columns: [
-            { "data": "uuid" },
-            { "data": "primaryip" },
-            { "data": "hostname" },
-            { "data": "implantos" },
+            { data: "uuid" },
+            { data: "primary_ip" },
+            { data: "hostname" },
+            { data: "implant_os" },
             {
-                "data": "supportedmodules",
+                data: "supported_modules",
                 render: {
                     _: '[, ]',
                 },
@@ -172,20 +169,19 @@
                 dataType: "json",
                 success: function (response) {
                     if (response === null) {
-                        callback({ "data": [] });
+                        callback({ data: [] });
                     } else {
-                        action_info = response;
-                        callback({ "data": response });
+                        callback({ data: response });
                     }
                 },
             })
         },
         columns: [
-            { "data": "uuid" },
-            { "data": "moduletorun" },
-            { "data": "modulefunc" },
+            { data: "uuid" },
+            { data: "module_to_run" },
+            { data: "module_func" },
             {
-                "data": "arguments"
+                data: "arguments"
             },
         ],
         colReorder: true,
@@ -196,7 +192,7 @@
 
     $('#stage-action-table').DataTable().on('select', function (e, dt, type, indexes) {
         var row = $('#stage-action-table').DataTable().rows(indexes).data();
-        var search = `(?=.*${row[0]["moduletorun"]})`;
+        var search = `(?=.*${row[0]["module_to_run"]})`;
         if (!selected_mods.includes(search)) {
             selected_mods.push(search);
         }
@@ -206,7 +202,7 @@
     $('#stage-action-table').DataTable().on('deselect', function (e, dt, type, indexes) {
         var row = $('#stage-action-table').DataTable().rows(indexes).data();
         for (let i = 0; i < selected_mods.length; i++) {
-            if (selected_mods[i].includes(row[0]["moduletorun"])) {
+            if (selected_mods[i].includes(row[0]["module_to_run"])) {
                 selected_mods.splice(i, 1);
                 break;
             }
@@ -235,9 +231,9 @@
                     already_staged[selected_actions[i].uuid].push(selected_implants[j].uuid);
                     var request = {
                         id: '',
-                        uuidofaction: selected_actions[i].uuid,
-                        uuidofimplant: selected_implants[j].uuid,
-                        timestaged: ''
+                        uuid_of_action: selected_actions[i].uuid,
+                        uuid_of_implant: selected_implants[j].uuid,
+                        time_staged: ''
                     }
                     $.ajax({
                         type: 'POST',
@@ -259,9 +255,9 @@
                                 already_staged[selected_actions[i].uuid].push(group_info[k].implants[l]);
                                 var request = {
                                     id: '',
-                                    uuidofaction: selected_actions[i].uuid,
-                                    uuidofimplant: group_info[k].implants[l],
-                                    timestaged: ''
+                                    uuid_of_action: selected_actions[i].uuid,
+                                    uuid_of_implant: group_info[k].implants[l],
+                                    time_staged: ''
                                 }
                                 $.ajax({
                                     type: 'POST',
@@ -285,7 +281,7 @@
         $('#table').DataTable().searchPanes.rebuildPane();
         $('#action-created-successful').show();
         $('#stage-action-confirm').removeAttr('disabled');
-    
+
         setTimeout(function () {
             $('#action-created-successful').hide();
         }, 4000);

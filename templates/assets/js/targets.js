@@ -1,5 +1,5 @@
 (function ($) {
-    let table = $('#table').DataTable({
+    $('#table').DataTable({
         colReorder: true,
         ajax: function (data, callback, settings) {
             $.ajax({
@@ -7,23 +7,23 @@
                 dataType: "json",
                 success: function (response) {
                     if (response === null) {
-                        callback({ "data": [] });
+                        callback({ data: [] });
                     } else {
-                        callback({ "data": response });
+                        callback({ data: response });
                     }
                 },
             })
         },
-        "columns": [
-            { "data": "implant.uuid" },
-            { "data": "implant.primaryip" },
-            { "data": "implant.hostname" },
-            { "data": "implanttype.implantname" },
-            { "data": "implanttype.implantversion" },
-            { "data": "implant.implantos" },
-            { "data": "callback.lastcall" },
+        columns: [
+            { data: "implant.uuid" },
+            { data: "implant.primary_ip" },
+            { data: "implant.hostname" },
+            { data: "implant_type.implant_name" },
+            { data: "implant_type.implant_version" },
+            { data: "implant.implant_os" },
+            { data: "callback.last_call" },
             {
-                "data": "implant.supportedmodules",
+                data: "implant.supported_modules",
                 render: {
                     _: '[, ]',
                     sp: '[]'
@@ -41,7 +41,7 @@
         ],
         dom: 'PBlfrtip',
         responsive: true,
-        "autoWidth": false,
+        autoWidth: false,
         columnDefs: [{
             searchPanes: {
                 show: true,

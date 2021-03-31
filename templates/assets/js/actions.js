@@ -1,7 +1,6 @@
 (function ($) {
-    let module_info = ''; //global variable
     let row_to_remove = ''; //global variable
-    let modulefuncs = [];
+    let module_funcs = [];
 
     $(document).on('shown.bs.modal', '#delete-action-modal', function (event) {
         row_to_remove = $(event.relatedTarget);
@@ -33,23 +32,22 @@
                 dataType: "json",
                 success: function (response) {
                     if (response === null) {
-                        callback({ "data": [] });
+                        callback({ data: [] });
                     } else {
                         for (var i = 0; i < response.length; i++) {
-                            response[i]["editbuttons"] = '<div role="group" class="btn-group btn-group-sm"><button class="btn btn-danger group-action-button" type="button" data-target="#delete-action-modal" data-toggle="modal"><i class="far fa-trash-alt"></i></button></div>';
+                            response[i]["edit_buttons"] = '<div role="group" class="btn-group btn-group-sm"><button class="btn btn-danger group-action-button" type="button" data-target="#delete-action-modal" data-toggle="modal"><i class="far fa-trash-alt"></i></button></div>';
                         }
-                        module_info = response;
-                        callback({ "data": response });
+                        callback({ data: response });
                     }
                 },
             })
         },
         columns: [
-            { "data": "uuid" },
-            { "data": "moduletorun" },
-            { "data": "modulefunc" },
-            {"data": "arguments"},
-            { "data": "editbuttons" },
+            { data: "uuid" },
+            { data: "module_to_run" },
+            { data: "module_func" },
+            { data: "arguments" },
+            { data: "edit_buttons" },
         ],
         colReorder: true,
         dom: 'PBlfrtip',
@@ -83,9 +81,9 @@
             url: `/api/modulefunc/${this.value}`,
             type: "get",
             success: function (response) {
-                modulefuncs = response;
+                module_funcs = response;
                 for (var i = 0; i < response.length; i++) {
-                    $('#module-function-select').append(`<option data-subtext="${response[i]["modulefuncdesc"]}" val="${response[i]["modulefuncname"]}">${response[i]["modulefuncname"]}</option>`);
+                    $('#module-function-select').append(`<option data-subtext="${response[i]["module_func_desc"]}" val="${response[i]["module_func_name"]}">${response[i]["module_func_name"]}</option>`);
                 }
                 $('#module-function-select').removeAttr('disabled');
                 $("#module-function-select").selectpicker("refresh");
@@ -100,20 +98,20 @@
         $('#dynamic-fields').empty();
         $('#create-action-confirm').removeAttr('disabled');
 
-        for (var i = 0; i < modulefuncs.length; i++) {
-            if (modulefuncs[i]["modulefuncname"] == this.value) {
-                for (var j = 0; j < modulefuncs[i]["parameternames"].length; j++) {
-                    if (modulefuncs[i]["parametertypes"][j] == "String") {
-                        console.log(modulefuncs[i]["parameternames"][j] + " is a String");
-                        $('#dynamic-fields').append(`<input class="form-control" type="text" id="${modulefuncs[i]["parameternames"][j]}" placeholder="${modulefuncs[i]["parameternames"][j]}" />`);
+        for (var i = 0; i < module_funcs.length; i++) {
+            if (module_funcs[i]["module_func_name"] == this.value) {
+                for (var j = 0; j < module_funcs[i]["param_names"].length; j++) {
+                    if (module_funcs[i]["param_types"][j] == "String") {
+                        console.log(module_funcs[i]["param_names"][j] + " is a String");
+                        $('#dynamic-fields').append(`<input class="form-control" type="text" id="${module_funcs[i]["param_names"][j]}" placeholder="${module_funcs[i]["param_names"][j]}" />`);
                     }
-                    else if (modulefuncs[i]["parametertypes"][j] == "Double") {
-                        console.log(modulefuncs[i]["parameternames"][j] + " is a Double");
-                        $('#dynamic-fields').append(`<input class="form-control" type="number" id="${modulefuncs[i]["parameternames"][j]}" placeholder="${modulefuncs[i]["parameternames"][j]}" min="0" step="any"/>`);
+                    else if (module_funcs[i]["param_types"][j] == "Double") {
+                        console.log(module_funcs[i]["param_names"][j] + " is a Double");
+                        $('#dynamic-fields').append(`<input class="form-control" type="number" id="${module_funcs[i]["param_names"][j]}" placeholder="${module_funcs[i]["param_names"][j]}" min="0" step="any"/>`);
                     }
-                    else if (modulefuncs[i]["parametertypes"][j] == "Int") {
-                        console.log(modulefuncs[i]["parameternames"][j] + " is an Int");
-                        $('#dynamic-fields').append(`<input class="form-control" type="number" id="${modulefuncs[i]["parameternames"][j]}" placeholder="${modulefuncs[i]["parameternames"][j]}" min="0" step="1" />`);
+                    else if (module_funcs[i]["param_types"][j] == "Int") {
+                        console.log(module_funcs[i]["param_names"][j] + " is an Int");
+                        $('#dynamic-fields').append(`<input class="form-control" type="number" id="${module_funcs[i]["param_names"][j]}" placeholder="${module_funcs[i]["param_names"][j]}" min="0" step="1" />`);
                     }
                 }
             }
@@ -137,7 +135,7 @@
             success: function (response) {
                 modules = response;
                 for (var i = 0; i < response.length; i++) {
-                    $('#module-select').append(`<option data-subtext="${response[i]["moduledesc"]}" val="${response[i]["modulename"]}">${response[i]["modulename"]}</option>`);
+                    $('#module-select').append(`<option data-subtext="${response[i]["module_desc"]}" val="${response[i]["module_name"]}">${response[i]["module_name"]}</option>`);
                 }
                 $("#module-select").selectpicker("refresh");
             },
@@ -161,15 +159,15 @@
 
         var request = {
             uuid: '',
-            moduletorun: $('#module-select').val(),
-            modulefunc: $('#module-function-select').val(),
+            module_to_run: $('#module-select').val(),
+            module_func: $('#module-function-select').val(),
             arguments: []
         }
         var temp = {}
-        for (var i = 0; i < modulefuncs.length; i++) {
-            if (modulefuncs[i]["modulefuncname"] == $('#module-function-select').val()) {
-                for (var j = 0; j < modulefuncs[i]["parameternames"].length; j++) {
-                    var name = `${modulefuncs[i]["parameternames"][j]}`;
+        for (var i = 0; i < module_funcs.length; i++) {
+            if (module_funcs[i]["module_func_name"] == $('#module-function-select').val()) {
+                for (var j = 0; j < module_funcs[i]["param_names"].length; j++) {
+                    var name = `${module_funcs[i]["param_names"][j]}`;
                     temp[name] = $(`#${name}`).val();
                 }
                 break;
@@ -193,6 +191,6 @@
     });
 
     $('#no-action-name-alert').hide();
-    $('#missing-parameters-alert').hide();
+    $('#missing-params-alert').hide();
     $('#action-created-successful').hide();
 })(jQuery); // End of use strict

@@ -32,7 +32,7 @@
 
         var request = {
             uuid: '',
-            groupname: $('#group-name-input').val(),
+            group_name: $('#group-name-input').val(),
             implants: []
         }
         implants_uuid = []
@@ -96,23 +96,23 @@
                 dataType: "json",
                 success: function (response) {
                     if (response === null) {
-                        callback({ "data": [] });
+                        callback({ data: [] });
                     } else {
                         for (var i = 0; i < response.length; i++) {
-                            response[i]["nummembers"] = response[i].implants.length;
-                            response[i]["editbuttons"] = '<div role="group" class="btn-group btn-group-sm"><button class="btn btn-primary group-action-button" type="button" data-target="#loading-modal" data-toggle="modal"><i class="fas fa-info-circle"></i></button><button class="btn btn-danger group-action-button" type="button" data-target="#delete-group-modal" data-toggle="modal"><i class="far fa-trash-alt"></i></button><button class="btn btn-warning group-action-button edit-group-button" type="button"><i class="far fa-edit"></i></button></div>';
+                            response[i]["num_members"] = response[i].implants.length;
+                            response[i]["edit_buttons"] = '<div role="group" class="btn-group btn-group-sm"><button class="btn btn-primary group-action-button" type="button" data-target="#loading-modal" data-toggle="modal"><i class="fas fa-info-circle"></i></button><button class="btn btn-danger group-action-button" type="button" data-target="#delete-group-modal" data-toggle="modal"><i class="far fa-trash-alt"></i></button><button class="btn btn-warning group-action-button edit-group-button" type="button"><i class="far fa-edit"></i></button></div>';
                         }
                         group_info = response;
-                        callback({ "data": response });
+                        callback({ data: response });
                     }
                 },
             })
         },
         columns: [
-            { "data": "uuid" },
-            { "data": "groupname" },
-            { "data": "nummembers" },
-            { "data": "editbuttons" },
+            { data: "uuid" },
+            { data: "group_name" },
+            { data: "num_members" },
+            { data: "edit_buttons" },
         ],
         colReorder: true,
         dom: 'PBlfrtip',
@@ -138,7 +138,7 @@
                 text: 'Select all filtered',
                 action: function () {
                     $('#create-group-table').DataTable().rows({
-                        search: 'applied' 
+                        search: 'applied'
                     }).select();
                 }
             },
@@ -159,23 +159,23 @@
                 dataType: "json",
                 success: function (response) {
                     if (response === null) {
-                        callback({ "data": [] });
+                        callback({ data: [] });
                     } else {
-                        callback({ "data": response });
+                        callback({ data: response });
                     }
                 },
             })
         },
         columns: [
-            { "data": "implant.uuid" },
-            { "data": "implant.primaryip" },
-            { "data": "implant.hostname" },
-            { "data": "implanttype.implantname" },
-            { "data": "implanttype.implantversion" },
-            { "data": "implant.implantos" },
-            { "data": "callback.lastcall" },
+            { data: "implant.uuid" },
+            { data: "implant.primary_ip" },
+            { data: "implant.hostname" },
+            { data: "implant_type.implant_name" },
+            { data: "implant_type.implant_version" },
+            { data: "implant.implant_os" },
+            { data: "callback.last_call" },
             {
-                "data": "implant.supportedmodules",
+                data: "implant.supported_modules",
                 render: {
                     _: '[, ]',
                     sp: '[]'
@@ -228,12 +228,12 @@
             callback({ data: group_implants })
         },
         columns: [
-            { "data": "uuid" },
-            { "data": "primaryip" },
-            { "data": "hostname" },
-            { "data": "implantos" },
+            { data: "uuid" },
+            { data: "primary_ip" },
+            { data: "hostname" },
+            { data: "implant_os" },
             {
-                "data": "supportedmodules",
+                data: "supported_modules",
                 render: {
                     _: '[, ]',
                     sp: '[]'
@@ -259,11 +259,11 @@
     $('#group-created-successful').hide();
 
     $(document).on("click", ".edit-group-button", function () {
-        let groupuuid = $(this).parents("tr").find("td:first").text();
+        let group_uuid = $(this).parents("tr").find("td:first").text();
         $('#group-name-input').val($(this).parents("tr").find("td:eq(1)").text())
         $('#create-group-table').DataTable().rows('.selected').deselect();
         for (var i = 0; i < group_info.length; i++) {
-            if (group_info[i].uuid == groupuuid) {
+            if (group_info[i].uuid == group_uuid) {
                 $('#create-group-table').DataTable().searchPanes.clearSelections();
                 var indexes = $('#create-group-table').DataTable().rows().eq(0).filter(function (rowIdx) {
                     return group_info[i].implants.includes($('#create-group-table').DataTable().cell(rowIdx, 0).data()) ? true : false;
