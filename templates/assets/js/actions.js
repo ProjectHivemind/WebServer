@@ -44,6 +44,7 @@
         },
         columns: [
             { data: "uuid" },
+            { data: "name" },
             { data: "module_to_run" },
             { data: "module_func" },
             { data: "arguments" },
@@ -60,7 +61,7 @@
             searchPanes: {
                 show: true
             },
-            targets: [0, 1, 2]
+            targets: [0, 1, 2, 3]
         },
         {
             searchPanes: {
@@ -159,6 +160,7 @@
 
         var request = {
             uuid: '',
+            name: $('#action-name-input').val(),
             module_to_run: $('#module-select').val(),
             module_func: $('#module-function-select').val(),
             arguments: ''
