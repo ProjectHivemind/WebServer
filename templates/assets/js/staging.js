@@ -70,24 +70,12 @@
             { data: "edit_buttons" },
         ],
         colReorder: true,
-        dom: 'PBlfrtip',
+        dom: 'Blfrtip',
         responsive: true,
         autoWidth: false,
         buttons: [
             'colvis'
         ],
-        columnDefs: [{
-            searchPanes: {
-                show: true
-            },
-            targets: [0, 1, 2, 3]
-        },
-        {
-            searchPanes: {
-                show: false
-            },
-            targets: [4]
-        }]
     });
 
     $('#table').DataTable({
