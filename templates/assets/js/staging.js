@@ -46,7 +46,7 @@
             { data: "executed_action.time_sent" },
             { data: "executed_action.time_ran" },
             { data: "executed_action.successful" },
-            { data: "executed_action.response" },
+            { data: "executed_action.action_response" },
             { data: "implant.primary_ip" },
             { data: "implant.hostname" },
             { data: "implant.mac" },
@@ -54,16 +54,7 @@
             { data: "stored_action.name" },
             { data: "stored_action.module_to_run" },
             { data: "stored_action.module_func" },
-            {
-                data: "stored_action.arguments",
-                render: {
-                    _: '[, ]',
-                    sp: '[]'
-                },
-                searchPanes: {
-                    orthogonal: 'sp'
-                }
-            },
+            { data: "stored_action.arguments" },
         ],
         colReorder: true,
         dom: 'lfrtip',
