@@ -41,7 +41,7 @@ func Login(c *gin.Context) {
 	token := middleware.Authorize(username, password)
 	if token != "" {
 		// "localhost" has to be updated for the domain / IP address
-		c.SetCookie("token", token, 3600, "/", "192.168.86.35", false, false)
+		c.SetCookie("token", token, 3600, "/", "localhost", false, false)
 		c.Redirect(http.StatusTemporaryRedirect, "/dashboard")
 	} else {
 		// TODO: Needs to give a failed auth message
@@ -54,7 +54,7 @@ func Logout(c *gin.Context) {
 	check := middleware.Validate(token)
 
 	if check {
-		c.SetCookie("token", "", 0, "/", "192.168.86.35", false, false)
+		c.SetCookie("token", "", 0, "/", "localhost", false, false)
 		middleware.DeAuthorize(token)
 	}
 	c.HTML(http.StatusTemporaryRedirect, "login.html", nil)
@@ -76,6 +76,7 @@ func LoadPage(c *gin.Context) {
 	}
 
 	switch pathArr[1] {
+	// TODO: DELETES ARE NOT BEING HANDLED CORRECTLY
 	case "api":
 		var forwardInfo ForwardInfo
 		forwardInfo.form = url.Values{}
