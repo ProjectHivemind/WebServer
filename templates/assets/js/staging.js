@@ -34,9 +34,6 @@
                     if (response === null) {
                         callback({ data: [] });
                     } else {
-                        for (var i = 0; i < response.length; i++) {
-                            response[i]["edit_buttons"] = '<div role="group" class="btn-group btn-group-sm"><button class="btn btn-danger group-action-button" type="button" data-target="#delete-action-modal" data-toggle="modal"><i class="far fa-trash-alt"></i></button></div>';
-                        }
                         callback({ data: response });
                     }
                 },
