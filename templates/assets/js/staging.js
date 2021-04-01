@@ -66,12 +66,9 @@
             },
         ],
         colReorder: true,
-        dom: 'Blfrtip',
+        dom: 'lfrtip',
         responsive: true,
         autoWidth: false,
-        buttons: [
-            'colvis'
-        ],
     });
 
     $('#table').DataTable({
