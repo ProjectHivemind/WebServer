@@ -25,6 +25,71 @@
         $('#table').DataTable().searchPanes.rebuildPane();
     });
 
+    $('#executed-actions-table').DataTable({
+        ajax: function (data, callback, settings) {
+            $.ajax({
+                url: "/api/executedactionfrontend",
+                dataType: "json",
+                success: function (response) {
+                    if (response === null) {
+                        callback({ data: [] });
+                    } else {
+                        for (var i = 0; i < response.length; i++) {
+                            response[i]["edit_buttons"] = '<div role="group" class="btn-group btn-group-sm"><button class="btn btn-danger group-action-button" type="button" data-target="#delete-action-modal" data-toggle="modal"><i class="far fa-trash-alt"></i></button></div>';
+                        }
+                        callback({ data: response });
+                    }
+                },
+            })
+        },
+        columns: [
+            { data: "executed_action.id" },
+            { data: "executed_action.uuid_of_implant" },
+            { data: "executed_action.uuid_of_action" },
+            { data: "executed_action.time_sent" },
+            { data: "executed_action.time_ran" },
+            { data: "executed_action.successful" },
+            { data: "executed_action.response" },
+            { data: "implant.primary_ip" },
+            { data: "implant.hostname" },
+            { data: "implant.mac" },
+            { data: "implant.implant_os" },
+            { data: "stored_action.name" },
+            { data: "stored_action.module_to_run" },
+            { data: "stored_action.module_func" },
+            {
+                data: "stored_action.arguments",
+                render: {
+                    _: '[, ]',
+                    sp: '[]'
+                },
+                searchPanes: {
+                    orthogonal: 'sp'
+                }
+            },
+            { data: "edit_buttons" },
+        ],
+        colReorder: true,
+        dom: 'PBlfrtip',
+        responsive: true,
+        autoWidth: false,
+        buttons: [
+            'colvis'
+        ],
+        columnDefs: [{
+            searchPanes: {
+                show: true
+            },
+            targets: [0, 1, 2, 3]
+        },
+        {
+            searchPanes: {
+                show: false
+            },
+            targets: [4]
+        }]
+    });
+
     $('#table').DataTable({
         ajax: function (data, callback, settings) {
             $.ajax({
