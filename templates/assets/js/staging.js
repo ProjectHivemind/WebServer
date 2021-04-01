@@ -67,7 +67,6 @@
                     orthogonal: 'sp'
                 }
             },
-            { data: "edit_buttons" },
         ],
         colReorder: true,
         dom: 'Blfrtip',
