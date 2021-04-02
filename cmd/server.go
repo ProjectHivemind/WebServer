@@ -1,14 +1,42 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
+	"os"
 
+	"github.com/ProjectHivemind/WebGUI/pkg/conf"
+	"github.com/ProjectHivemind/WebGUI/pkg/middleware"
 	"github.com/ProjectHivemind/WebGUI/pkg/routehandler"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
+	if len(os.Args) != 2 {
+		fmt.Println("missing argument: need path to config file")
+		os.Exit(1)
+	}
+	configFilePath := os.Args[1]
+
+	// Reads the config file
+	var configOptions conf.ConfOptions
+	configOptions.GetConf(configFilePath)
+
+	// Set the all of the variables based on the config
+	routehandler.SetApiUrl(
+		configOptions.Restapi["uri"],
+		configOptions.Restapi["port"],
+	)
+	routehandler.SetDomain(configOptions.Webserver["uri"])
+
+	middleware.SetApiUrl(
+		configOptions.Restapi["uri"],
+		configOptions.Restapi["port"],
+	)
+
+	// Set up gin
+	gin.SetMode(gin.ReleaseMode) // Change this to enabled debugging
 	r := gin.Default()
 
 	r.LoadHTMLGlob("../templates/*.html")
@@ -35,5 +63,5 @@ func main() {
 
 	r.NoRoute(routehandler.LoadPage)
 
-	r.Run()
+	r.Run("0.0.0.0:" + configOptions.Webserver["port"])
 }

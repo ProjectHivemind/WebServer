@@ -13,7 +13,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-const API_URL = "http://127.0.0.1:4321"
+var API_URL string = "http://localhost:4321"
+var DOMAIN string = "localhost"
 
 type ForwardInfo struct {
 	method string
@@ -22,7 +23,17 @@ type ForwardInfo struct {
 	body   []byte
 }
 
+func SetApiUrl(uri, port string) {
+	API_URL = "http://" + uri + ":" + port
+}
+
+func SetDomain(uri string) {
+	DOMAIN = uri
+}
+
 func LoginPage(c *gin.Context) {
+	fmt.Println(API_URL)
+	fmt.Println(DOMAIN)
 	// Check if user is already has a valid session
 	token, _ := c.Cookie("token")
 	check := middleware.Validate(token)
@@ -41,7 +52,7 @@ func Login(c *gin.Context) {
 	token := middleware.Authorize(username, password)
 	if token != "" {
 		// "localhost" has to be updated for the domain / IP address
-		c.SetCookie("token", token, 3600, "/", "localhost", false, false)
+		c.SetCookie("token", token, 3600, "/", DOMAIN, false, false)
 		c.Redirect(http.StatusTemporaryRedirect, "/dashboard")
 	} else {
 		// TODO: Needs to give a failed auth message
@@ -54,7 +65,7 @@ func Logout(c *gin.Context) {
 	check := middleware.Validate(token)
 
 	if check {
-		c.SetCookie("token", "", 0, "/", "localhost", false, false)
+		c.SetCookie("token", "", 0, "/", DOMAIN, false, false)
 		middleware.DeAuthorize(token)
 	}
 	c.HTML(http.StatusTemporaryRedirect, "login.html", nil)

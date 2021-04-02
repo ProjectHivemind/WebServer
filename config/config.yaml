@@ -1,0 +1,10 @@
+# Web Server config file which allows you to change
+# different options on the web server.
+
+webserver:
+  uri: "172.16.100.5"
+  port: "8080"
+
+restapi:
+  uri: "localhost"
+  port: "4321"

@@ -4,6 +4,7 @@ import (
 	"crypto/rand"
 	"encoding/hex"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -15,9 +16,15 @@ import (
 
 const token_length = 128
 
-const API_URL = "http://127.0.0.1:4321"
+var API_URL string = "http://127.0.0.1:4321"
+
+func SetApiUrl(uri, port string) {
+	API_URL = "http://" + uri + ":" + port
+}
 
 func Authorize(username, password string) string {
+	fmt.Println(API_URL)
+
 	hc := http.Client{}
 
 	form := url.Values{}
