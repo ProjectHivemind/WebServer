@@ -103,7 +103,7 @@
                                     <div class="row align-items-center no-gutters">
                                         <div class="col mr-2">
                                             <div class="text-uppercase text-primary font-weight-bold text-xs mb-1"><span>Stored Actions</span></div>
-                                            <div class="text-dark font-weight-bold h5 mb-0"><span>2000</span></div>
+                                            <div class="text-dark font-weight-bold h5 mb-0"><span id="stored-actions"></span></div>
                                         </div>
                                         <div class="col-auto"><i class="material-icons fa-2x text-gray-300">sd_storage</i></div>
                                     </div>
@@ -115,8 +115,8 @@
                                 <div class="card-body">
                                     <div class="row align-items-center no-gutters">
                                         <div class="col mr-2">
-                                            <div class="text-uppercase text-success font-weight-bold text-xs mb-1"><span>number of Unique implants</span></div>
-                                            <div class="text-dark font-weight-bold h5 mb-0"><span>2000</span></div>
+                                            <div class="text-uppercase text-success font-weight-bold text-xs mb-1"><span>number of implants</span></div>
+                                            <div class="text-dark font-weight-bold h5 mb-0"><span id="unique-implants"></span></div>
                                         </div>
                                         <div class="col-auto"><i class="material-icons fa-2x text-gray-300">devices_other</i></div>
                                     </div>
@@ -128,10 +128,10 @@
                                 <div class="card-body">
                                     <div class="row align-items-center no-gutters">
                                         <div class="col mr-2">
-                                            <div class="text-uppercase text-info font-weight-bold text-xs mb-1"><span>Number of Callbacks</span></div>
+                                            <div class="text-uppercase text-info font-weight-bold text-xs mb-1"><span>Number of actions SENT</span></div>
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col">
-                                                    <div class="text-dark font-weight-bold h5 mb-0 mr-3"><span>50000</span></div>
+                                                    <div class="text-dark font-weight-bold h5 mb-0 mr-3"><span id="number-actions-sent"></span></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -146,7 +146,7 @@
                                     <div class="row align-items-center no-gutters">
                                         <div class="col mr-2">
                                             <div class="text-uppercase text-warning font-weight-bold text-xs mb-1"><span>Pending Actions</span></div>
-                                            <div class="text-dark font-weight-bold h5 mb-0"><span>18</span></div>
+                                            <div class="text-dark font-weight-bold h5 mb-0"><span id="pending-actions"></span></div>
                                         </div>
                                         <div class="col-auto"><i class="fas fa-running fa-2x text-gray-300"></i></div>
                                     </div>
@@ -167,7 +167,7 @@
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <div class="chart-area"><canvas data-bss-chart="{&quot;type&quot;:&quot;line&quot;,&quot;data&quot;:{&quot;labels&quot;:[&quot;Jan&quot;,&quot;Feb&quot;,&quot;Mar&quot;,&quot;Apr&quot;,&quot;May&quot;,&quot;Jun&quot;,&quot;Jul&quot;,&quot;Aug&quot;],&quot;datasets&quot;:[{&quot;label&quot;:&quot;Successful&quot;,&quot;fill&quot;:true,&quot;data&quot;:[&quot;0&quot;,&quot;2000&quot;,&quot;5000&quot;,&quot;8999&quot;,&quot;10000&quot;,&quot;12000&quot;,&quot;14000&quot;,&quot;15000&quot;],&quot;backgroundColor&quot;:&quot;rgba(78, 115, 223, 0.05)&quot;,&quot;borderColor&quot;:&quot;rgba(78, 115, 223, 1)&quot;},{&quot;label&quot;:&quot;Unsuccessful&quot;,&quot;fill&quot;:true,&quot;data&quot;:[&quot;0&quot;,&quot;0&quot;,&quot;0&quot;,&quot;10&quot;,&quot;50&quot;,&quot;100&quot;,&quot;1000&quot;,&quot;1200&quot;],&quot;backgroundColor&quot;:&quot;rgba(78, 115, 223, 0.05)&quot;,&quot;borderColor&quot;:&quot;rgb(255,0,0)&quot;}]},&quot;options&quot;:{&quot;maintainAspectRatio&quot;:false,&quot;legend&quot;:{&quot;display&quot;:true},&quot;title&quot;:{},&quot;scales&quot;:{&quot;xAxes&quot;:[{&quot;gridLines&quot;:{&quot;color&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;zeroLineColor&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;drawBorder&quot;:false,&quot;drawTicks&quot;:false,&quot;borderDash&quot;:[&quot;2&quot;],&quot;zeroLineBorderDash&quot;:[&quot;2&quot;],&quot;drawOnChartArea&quot;:false},&quot;ticks&quot;:{&quot;fontColor&quot;:&quot;#858796&quot;,&quot;padding&quot;:20}}],&quot;yAxes&quot;:[{&quot;gridLines&quot;:{&quot;color&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;zeroLineColor&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;drawBorder&quot;:false,&quot;drawTicks&quot;:false,&quot;borderDash&quot;:[&quot;2&quot;],&quot;zeroLineBorderDash&quot;:[&quot;2&quot;]},&quot;ticks&quot;:{&quot;fontColor&quot;:&quot;#858796&quot;,&quot;padding&quot;:20}}]}}}"></canvas></div>
+                                    <div id="actions-ran-chart" class="chart-area"><canvas data-bss-chart="{&quot;type&quot;:&quot;line&quot;,&quot;data&quot;:{&quot;labels&quot;:[&quot;Jan&quot;,&quot;Feb&quot;,&quot;Mar&quot;,&quot;Apr&quot;,&quot;May&quot;,&quot;Jun&quot;,&quot;Jul&quot;,&quot;Aug&quot;],&quot;datasets&quot;:[]},&quot;options&quot;:{&quot;maintainAspectRatio&quot;:false,&quot;legend&quot;:{&quot;display&quot;:true},&quot;title&quot;:{},&quot;scales&quot;:{&quot;xAxes&quot;:[{&quot;gridLines&quot;:{&quot;color&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;zeroLineColor&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;drawBorder&quot;:false,&quot;drawTicks&quot;:false,&quot;borderDash&quot;:[&quot;2&quot;],&quot;zeroLineBorderDash&quot;:[&quot;2&quot;],&quot;drawOnChartArea&quot;:false},&quot;ticks&quot;:{&quot;fontColor&quot;:&quot;#858796&quot;,&quot;padding&quot;:20}}],&quot;yAxes&quot;:[{&quot;gridLines&quot;:{&quot;color&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;zeroLineColor&quot;:&quot;rgb(234, 236, 244)&quot;,&quot;drawBorder&quot;:false,&quot;drawTicks&quot;:false,&quot;borderDash&quot;:[&quot;2&quot;],&quot;zeroLineBorderDash&quot;:[&quot;2&quot;],&quot;drawOnChartArea&quot;:true},&quot;ticks&quot;:{&quot;fontColor&quot;:&quot;#858796&quot;,&quot;padding&quot;:20}}]}}}"></canvas></div>
                                 </div>
                             </div>
                         </div>
@@ -183,7 +183,7 @@
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <div class="chart-area"><canvas data-bss-chart="{&quot;type&quot;:&quot;doughnut&quot;,&quot;data&quot;:{&quot;labels&quot;:[&quot;BP&quot;,&quot;Cattails&quot;,&quot;Iroh&quot;,&quot;Other&quot;],&quot;datasets&quot;:[{&quot;label&quot;:&quot;&quot;,&quot;backgroundColor&quot;:[&quot;#4e73df&quot;,&quot;#1cc88a&quot;,&quot;#36b9cc&quot;,&quot;rgba(0,0,0,0.1)&quot;],&quot;borderColor&quot;:[&quot;#ffffff&quot;,&quot;#ffffff&quot;,&quot;#ffffff&quot;,&quot;#ffffff&quot;],&quot;data&quot;:[&quot;50&quot;,&quot;30&quot;,&quot;15&quot;,&quot;5&quot;]}]},&quot;options&quot;:{&quot;maintainAspectRatio&quot;:false,&quot;legend&quot;:{&quot;display&quot;:true,&quot;position&quot;:&quot;bottom&quot;,&quot;reverse&quot;:false},&quot;title&quot;:{&quot;display&quot;:false}}}"></canvas></div>
+                                    <div id="implant-types-chart" class="chart-area"><canvas data-bss-chart="{&quot;type&quot;:&quot;doughnut&quot;,&quot;data&quot;:{&quot;labels&quot;:[],&quot;datasets&quot;:[]},&quot;options&quot;:{&quot;maintainAspectRatio&quot;:false,&quot;legend&quot;:{&quot;display&quot;:true,&quot;position&quot;:&quot;bottom&quot;,&quot;reverse&quot;:false},&quot;title&quot;:{&quot;display&quot;:false}}}"></canvas></div>
                                 </div>
                             </div>
                         </div>
@@ -194,28 +194,7 @@
                                 <div class="card-header py-3">
                                     <h6 class="text-primary font-weight-bold m-0">Most Used Modules</h6>
                                 </div>
-                                <div class="card-body">
-                                    <h4 class="small font-weight-bold">Command Line<span class="float-right">20%</span></h4>
-                                    <div class="progress mb-4">
-                                        <div class="progress-bar bg-danger" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%;"><span class="sr-only">20%</span></div>
-                                    </div>
-                                    <h4 class="small font-weight-bold">Ping<span class="float-right">5%</span></h4>
-                                    <div class="progress mb-4">
-                                        <div class="progress-bar bg-warning" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100" style="width: 5%;"><span class="sr-only">5%</span></div>
-                                    </div>
-                                    <h4 class="small font-weight-bold">Firewall<span class="float-right">5%</span></h4>
-                                    <div class="progress mb-4">
-                                        <div class="progress-bar bg-primary" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100" style="width: 5%;"><span class="sr-only">5%</span></div>
-                                    </div>
-                                    <h4 class="small font-weight-bold">Password Harvest<span class="float-right">20%</span></h4>
-                                    <div class="progress mb-4">
-                                        <div class="progress-bar bg-info" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%;"><span class="sr-only">20%</span></div>
-                                    </div>
-                                    <h4 class="small font-weight-bold">Add User<span class="float-right">2%</span></h4>
-                                    <div class="progress mb-4">
-                                        <div class="progress-bar bg-success" aria-valuenow="2" aria-valuemin="0" aria-valuemax="100" style="width: 2%;"><span class="sr-only">2%</span></div>
-                                    </div>
-                                </div>
+                                <div class="card-body" id="most-used-modules"></div>
                             </div>
                         </div>
                         <div class="col-lg-6 mb-4">
@@ -223,79 +202,9 @@
                                 <div class="card-header py-3">
                                     <h6 class="text-primary m-0 font-weight-bold">Network Topology</h6>
                                 </div>
-                                <div class="card-body"><div id="mynetwork">
-  <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
-  <!--
-  Including other packages like Vis Timeline or Vis Graph3D here won't work.
-  You need the peer build to do that.
--->
-
-  <script type="text/javascript">
-    // create an array with nodes
-    var nodes = new vis.DataSet([
-      { id: 'Teamserver', label: "Team Server" },
-      { id: 1, label: "192.168.1.0/24" },
-      { id: 2, label: "Joe's C2" },
-      { id: 213, label: "192.168.2.13" },
-      { id: 110, label: "192.168.1.10" },
-      { id: 210, label: "192.168.2.10" },
-      { id: 111, label: "192.168.1.11" },
-      { id: 211, label: "192.168.2.11" },
-      { id: 112, label: "192.168.1.12" },
-      { id: 212, label: "192.168.2.12" },
-      { id: 113, label: "192.168.1.13" }
-    ]);
-
-    // create an array with edges
-    var edges = new vis.DataSet([
-      { from: 1, to: 'Teamserver' },
-      { from: 2, to: 'Teamserver' },
-      { from: 210, to: 2 },
-      { from: 211, to: 2 },
-      { from: 212, to: 2 },
-      { from: 213, to: 2 },
-      { from: 110, to: 1 },
-      { from: 111, to: 1 },
-      { from: 112, to: 1 },
-      { from: 113, to: 1 }
-    ]);
-
-    // create a network
-    var container = document.getElementById("mynetwork");
-    var data = {
-      nodes: nodes,
-      edges: edges
-    };
-    var options = {
-      height: '315px',
-      layout: {
-        hierarchical: {
-          direction: "DU",
-          sortMethod: "directed",
-          parentCentralization: false
-        },
-      },
-      physics: {
-        "enabled": true,
-      },
-      edges: {
-        straight: {
-          type: 'continuous'
-        }
-      },
-      interaction: {
-        navigationButtons: false,
-        selectConnectedEdges: false
-      }
-    };
-    var fitOption = {
-      nodes: nodes.getIds() //nodes is type of vis.DataSet contains all the nodes
-    }
-    var network = new vis.Network(container, data, options);
-    network.fit(fitOption);
-
-  </script>
-</div></div>
+                                <div class="card-body">
+                                    <div id="vis_network"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -314,7 +223,10 @@
     <script src="assets/js/bs-init.js"></script>
     <script src="assets/js/datatables.min.js"></script>
     <script src="assets/js/jquery.easing.js"></script>
+    <script src="assets/js/vis-network.min.js"></script>
+    <script src="assets/js/moment.min.js"></script>
     <script src="assets/js/theme.js"></script>
+    <script src="assets/js/dashboard.js"></script>
 </body>
 
 </html>
