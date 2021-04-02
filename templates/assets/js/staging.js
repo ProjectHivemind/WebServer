@@ -41,22 +41,28 @@
         },
         columns: [
             { data: "executed_action.id" },
+            { data: "stored_action.name" },
             { data: "executed_action.uuid_of_implant" },
             { data: "executed_action.uuid_of_action" },
-            { data: "executed_action.time_sent" },
-            { data: "executed_action.time_ran" },
-            { data: "executed_action.successful" },
-            { data: "executed_action.action_response" },
-            { data: "implant.primary_ip" },
             { data: "implant.hostname" },
             { data: "implant.mac" },
             { data: "implant.implant_os" },
-            { data: "stored_action.name" },
+            { data: "executed_action.time_sent" },
+            {
+                data: "executed_action.action_response",
+                render: function (data, type, row) {
+                    return data.replace(/\n/ig, "<br/>");
+                },
+            },
+            { data: "implant.primary_ip" },
             { data: "stored_action.module_to_run" },
             { data: "stored_action.module_func" },
             { data: "stored_action.arguments" },
+            { data: "executed_action.time_ran" },
+            { data: "executed_action.successful" },
         ],
         colReorder: true,
+        order: [[13, "desc"]],
         dom: 'lfrtip',
         responsive: true,
         autoWidth: false,
@@ -81,42 +87,19 @@
         },
         columns: [
             { data: "staged_action.id" },
+            { data: "stored_action.name" },
             { data: "implant.primary_ip" },
             { data: "implant.hostname" },
             { data: "implant.implant_os" },
             { data: "stored_action.module_to_run" },
             { data: "stored_action.module_func" },
-            {
-                data: "stored_action.arguments",
-                render: {
-                    _: '[, ]',
-                    sp: '[]'
-                },
-                searchPanes: {
-                    orthogonal: 'sp'
-                }
-            },
+            { data: "stored_action.arguments" },
             { data: "edit_buttons" },
         ],
         colReorder: true,
-        dom: 'PBlfrtip',
+        dom: 'lfrtip',
         responsive: true,
         autoWidth: false,
-        buttons: [
-            'colvis'
-        ],
-        columnDefs: [{
-            searchPanes: {
-                show: true
-            },
-            targets: [0, 1, 2, 3]
-        },
-        {
-            searchPanes: {
-                show: false
-            },
-            targets: [4]
-        }]
     });
 
     $('#stage-group-table').DataTable({
@@ -215,11 +198,10 @@
         },
         columns: [
             { data: "uuid" },
+            { data: "name" },
             { data: "module_to_run" },
             { data: "module_func" },
-            {
-                data: "arguments"
-            },
+            { data: "arguments" },
         ],
         colReorder: true,
         dom: 'lfrtip',

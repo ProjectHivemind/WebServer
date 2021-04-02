@@ -106,23 +106,25 @@
                         </div>
                         <div class="card-body">
                             <div class="table-responsive table mt-2" role="grid" aria-describedby="dataTable_info">
-                                <table class="table my-0" id="table">
+                                <table class="table table-striped my-0" id="table">
                                     <thead>
                                         <tr>
-                                            <th>UUID</th>
+                                            <th>Action ID</th>
+                                            <th class="all">Action Name</th>
                                             <th>Primary IP</th>
                                             <th>Hostname</th>
                                             <th>OS</th>
                                             <th>Module</th>
                                             <th>Function</th>
                                             <th>Arguments</th>
-                                            <th>Actions</th>
+                                            <th class="all">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody></tbody>
                                     <tfoot>
                                         <tr>
-                                            <td>UUID</td>
+                                            <td>Action ID</td>
+                                            <td>Action Name</td>
                                             <td>Primary IP</td>
                                             <td>Hostname</td>
                                             <td>OS</td>
@@ -142,76 +144,102 @@
                                         </div>
                                         <div class="modal-body">
                                             <div class="alert alert-success fade show" role="alert" id="action-created-successful"><span><strong>Alert</strong>&nbsp;Action Staged Successfully.</span></div>
-                                            <div class="custom-col"><label>Actions</label>
-                                                <div class="table-responsive table mt-2" role="grid" aria-describedby="dataTable_info">
-                                                    <table class="table my-0" id="stage-action-table">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>UUID</th>
-                                                                <th>Module</th>
-                                                                <th>Function</th>
-                                                                <th>Arguments</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody></tbody>
-                                                        <tfoot>
-                                                            <tr>
-                                                                <td><strong>UUID<br></strong></td>
-                                                                <td><strong>Module<br></strong></td>
-                                                                <td><strong>Function<br></strong></td>
-                                                                <td><strong>Arguments<br></strong></td>
-                                                            </tr>
-                                                        </tfoot>
-                                                    </table>
-                                                </div><label for="#dynamic-fields">Targets</label>
-                                                <div class="row">
-                                                    <div class="col"><label>Groups</label>
+                                            <div class="custom-col">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <h4 class="card-title">Actions</h4>
+                                                        <h6 class="text-muted card-subtitle mb-2">Select actions to run</h6>
                                                         <div class="table-responsive table mt-2" role="grid" aria-describedby="dataTable_info">
-                                                            <table class="table table-striped my-0" id="stage-group-table">
+                                                            <table class="table table-striped my-0" id="stage-action-table">
                                                                 <thead>
                                                                     <tr>
-                                                                        <th>UUID</th>
-                                                                        <th>Name</th>
-                                                                        <th>Number of Members</th>
+                                                                        <th>Action UUID</th>
+                                                                        <th>Action Name</th>
+                                                                        <th>Module</th>
+                                                                        <th>Function</th>
+                                                                        <th>Arguments</th>
                                                                     </tr>
                                                                 </thead>
-                                                                <tbody>
-                                                                    <tr></tr>
-                                                                    <tr></tr>
-                                                                </tbody>
+                                                                <tbody></tbody>
                                                                 <tfoot>
                                                                     <tr>
-                                                                        <td><strong>UUID</strong><br></td>
-                                                                        <td><strong>Name</strong></td>
-                                                                        <td><strong>Number of Members</strong></td>
+                                                                        <td>Action UUID</td>
+                                                                        <td>Action Name</td>
+                                                                        <td>Module</td>
+                                                                        <td>Function</td>
+                                                                        <td>Arguments</td>
                                                                     </tr>
                                                                 </tfoot>
                                                             </table>
                                                         </div>
                                                     </div>
-                                                    <div class="col"><label>Implants</label>
-                                                        <div class="table-responsive mt-2 display table" role="grid" aria-describedby="dataTable_info">
-                                                            <table class="table table-striped my-0 display" id="stage-target-table">
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th>UUID</th>
-                                                                        <th>Primary IP</th>
-                                                                        <th>Hostname</th>
-                                                                        <th>OS</th>
-                                                                        <th>Supported Modules</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody id="tableBody"></tbody>
-                                                                <tfoot>
-                                                                    <tr>
-                                                                        <td><strong>UUID</strong><br></td>
-                                                                        <td><strong>Primary IP</strong></td>
-                                                                        <td><strong>Hostname</strong></td>
-                                                                        <td><strong>OS</strong></td>
-                                                                        <td><strong>Supported Modules</strong><br></td>
-                                                                    </tr>
-                                                                </tfoot>
-                                                            </table>
+                                                </div>
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <h4 class="card-title">Targets</h4>
+                                                        <h6 class="text-muted card-subtitle mb-2">Select targets to run actions on</h6>
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <div class="card">
+                                                                    <div class="card-body">
+                                                                        <h4 class="card-title">Groups</h4>
+                                                                        <h6 class="text-muted card-subtitle mb-2">What groups to target?</h6>
+                                                                        <div class="table-responsive table mt-2" role="grid" aria-describedby="dataTable_info">
+                                                                            <table class="table table-striped my-0" id="stage-group-table">
+                                                                                <thead>
+                                                                                    <tr>
+                                                                                        <th>Group UUID</th>
+                                                                                        <th>Name</th>
+                                                                                        <th>Number of Members</th>
+                                                                                    </tr>
+                                                                                </thead>
+                                                                                <tbody>
+                                                                                    <tr></tr>
+                                                                                    <tr></tr>
+                                                                                </tbody>
+                                                                                <tfoot>
+                                                                                    <tr>
+                                                                                        <td>Group UUID</td>
+                                                                                        <td>Name</td>
+                                                                                        <td>Number of Members</td>
+                                                                                    </tr>
+                                                                                </tfoot>
+                                                                            </table>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col">
+                                                                <div class="card">
+                                                                    <div class="card-body">
+                                                                        <h4 class="card-title">Implants</h4>
+                                                                        <h6 class="text-muted card-subtitle mb-2">What implants to target?</h6>
+                                                                        <div class="table-responsive mt-2 display table" role="grid" aria-describedby="dataTable_info">
+                                                                            <table class="table table-striped my-0 display" id="stage-target-table">
+                                                                                <thead>
+                                                                                    <tr>
+                                                                                        <th>Implant UUID</th>
+                                                                                        <th>Primary IP</th>
+                                                                                        <th>Hostname</th>
+                                                                                        <th>OS</th>
+                                                                                        <th>Supported Modules</th>
+                                                                                    </tr>
+                                                                                </thead>
+                                                                                <tbody id="tableBody"></tbody>
+                                                                                <tfoot>
+                                                                                    <tr>
+                                                                                        <td>Implant UUID</td>
+                                                                                        <td>Primary IP</td>
+                                                                                        <td>Hostname</td>
+                                                                                        <td>OS</td>
+                                                                                        <td>Supported Modules</td>
+                                                                                    </tr>
+                                                                                </tfoot>
+                                                                            </table>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -248,44 +276,44 @@
                         </div>
                         <div class="card-body">
                             <div class="table-responsive table mt-2" role="grid" aria-describedby="dataTable_info">
-                                <table class="table my-0" id="executed-actions-table">
+                                <table class="table table-striped my-0" id="executed-actions-table">
                                     <thead>
                                         <tr>
-                                            <th class="none">ID</th>
+                                            <th class="none">Action ID</th>
+                                            <th class="all">Name of Action</th>
                                             <th class="none">UUID of Implant</th>
                                             <th class="none">UUID of Action</th>
-                                            <th class="none">TimeSent</th>
-                                            <th class="all">TimeRan</th>
-                                            <th class="all">Successful</th>
-                                            <th class="all">Response</th>
-                                            <th class="all">Primary IP</th>
                                             <th class="none">Hostname</th>
                                             <th class="none">MAC</th>
                                             <th class="none">ImplantOS</th>
-                                            <th class="all">Name of Action</th>
+                                            <th class="none">TimeSent</th>
+                                            <th class="none">Response</th>
+                                            <th class="all">Primary IP</th>
                                             <th class="all">Module</th>
                                             <th class="all">Module Function</th>
                                             <th class="all">Arguments</th>
+                                            <th class="all">TimeRan</th>
+                                            <th class="all">Successful</th>
                                         </tr>
                                     </thead>
                                     <tbody></tbody>
                                     <tfoot>
                                         <tr>
-                                            <td>ID</td>
-                                            <td>UUID of Implant</td>
-                                            <td>UUID of Action</td>
-                                            <td>TimeSent</td>
-                                            <td>TimeRan</td>
-                                            <td>Successful</td>
-                                            <td>Response</td>
-                                            <td>Primary IP</td>
-                                            <td>Hostname</td>
-                                            <td>MAC</td>
-                                            <td>ImplantOS</td>
-                                            <td>Name of Action</td>
-                                            <td>Module</td>
-                                            <td>Module Function</td>
-                                            <td>Arguments</td>
+                                            <td class="none">Action ID</td>
+                                            <td class="all">Name of Action</td>
+                                            <td class="none">UUID of Implant</td>
+                                            <td class="none">UUID of Action</td>
+                                            <td class="none">Hostname</td>
+                                            <td class="none">MAC</td>
+                                            <td class="none">ImplantOS</td>
+                                            <td class="none">TimeSent</td>
+                                            <td class="none">Response</td>
+                                            <td class="all">Primary IP</td>
+                                            <td class="all">Module</td>
+                                            <td class="all">Module Function</td>
+                                            <td class="all">Arguments</td>
+                                            <td class="all">TimeRan</td>
+                                            <td class="all">Successful</td>
                                         </tr>
                                     </tfoot>
                                 </table>
