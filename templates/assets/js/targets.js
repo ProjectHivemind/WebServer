@@ -18,9 +18,9 @@
             { data: "implant.uuid" },
             { data: "implant.primary_ip" },
             { data: "implant.hostname" },
+            { data: "implant.implant_os" },
             { data: "implant_type.implant_name" },
             { data: "implant_type.implant_version" },
-            { data: "implant.implant_os" },
             { data: "callback.last_call" },
             {
                 data: "implant.supported_modules",
