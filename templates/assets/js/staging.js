@@ -47,7 +47,12 @@
             { data: "implant.hostname" },
             { data: "implant.mac" },
             { data: "implant.implant_os" },
-            { data: "executed_action.time_sent" },
+            {
+                data: "executed_action.time_sent",
+                render: function (data, type, row, meta) {
+                    return moment.utc(data).local().format('MMM DD HH:mm:ss');
+                },
+            },
             {
                 data: "executed_action.action_response",
                 render: function (data, type, row) {
@@ -58,7 +63,16 @@
             { data: "stored_action.module_to_run" },
             { data: "stored_action.module_func" },
             { data: "stored_action.arguments" },
-            { data: "executed_action.time_ran" },
+            {
+                data: "executed_action.time_ran",
+                render: function (data, type, row, meta) {
+                    var temp = moment.utc(data).local().format('MMM DD HH:mm:ss');
+                    if (temp == 'Invalid date') {
+                        return "";
+                    }
+                    return temp;
+                },
+            },
             { data: "executed_action.successful" },
         ],
         colReorder: true,

@@ -173,7 +173,12 @@
             { data: "implant.implant_os" },
             { data: "implant_type.implant_name" },
             { data: "implant_type.implant_version" },
-            { data: "callback.last_call" },
+            { 
+                data: "callback.last_call",
+                render: function (data, type, row, meta) {
+                    return moment.utc(data).local().format('MMM DD HH:mm:ss');
+                },
+            },
             {
                 data: "implant.supported_modules",
                 render: {
