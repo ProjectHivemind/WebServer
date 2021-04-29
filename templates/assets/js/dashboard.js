@@ -90,6 +90,7 @@
             } else {
                 $('#number-actions-sent').text(response.length);
             }
+
             var temp_successful_data = [];
             var temp_unsuccessful_data = [];
             var successful_data = [];
@@ -100,9 +101,9 @@
             if (response != null) {
                 for (var i = 0; i < response.length; i++) {
                     if (response[i]['executed_action']['successful'] == true) {
-                        temp_successful_data.push(moment(response[i]['executed_action']['time_sent'], 'MMM DD HH:mm:ss'));
+                        temp_successful_data.push(moment.utc(response[i]['executed_action']['time_sent']).local());
                     } else {
-                        temp_unsuccessful_data.push(moment(response[i]['executed_action']['time_sent'], 'MMM DD HH:mm:ss'));
+                        temp_unsuccessful_data.push(moment.utc(response[i]['executed_action']['time_sent']).local());
                     }
                     if (!(response[i]['stored_action']['module_to_run'] in modules_used)) {
                         modules_used[response[i]['stored_action']['module_to_run']] = {
@@ -111,17 +112,17 @@
                     } else {
                         modules_used[response[i]['stored_action']['module_to_run']]['num']++;
                     }
-                    saved_labels.push(moment(response[i]['executed_action']['time_sent'], 'MMM DD HH:mm:ss'));
+                    saved_labels.push(moment.utc(response[i]['executed_action']['time_sent']).local());
                 }
 
                 let sorted_successful_data = temp_successful_data.sort((a, b) => a.diff(b))
                 let sorted_unsuccessful_data = temp_unsuccessful_data.sort((a, b) => a.diff(b))
                 saved_labels = saved_labels.sort((a, b) => a.diff(b))
                 for (var i = 0; i < sorted_successful_data.length; i++) {
-                    successful_data.push({ x: sorted_successful_data[i].format(), y: i + 1 });
+                    successful_data.push({ x: sorted_successful_data[i].toString(), y: i + 1 });
                 }
                 for (var i = 0; i < sorted_unsuccessful_data.length; i++) {
-                    unsuccessful_data.push({ x: sorted_unsuccessful_data[i].format(), y: i + 1 });
+                    unsuccessful_data.push({ x: sorted_unsuccessful_data[i].toString(), y: i + 1 });
                 }
             }
 
@@ -165,16 +166,26 @@
                     }]
                 },
                 options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
                     scales: {
                         yAxes: [{
                             ticks: {
-                                beginAtZero: true
+                                beginAtZero: true,
+                                display: true,
+                                autoSkip: true,
+                                maxTicksLimit: 5
                             }
                         }],
                         xAxes: [{
                             type: 'time',
                             time: {
                                 unit: 'minute'
+                            },
+                            ticks: {
+                                display: true,
+                                autoSkip: true,
+                                maxTicksLimit: 5
                             }
                         }]
                     }
@@ -235,6 +246,8 @@
                                 labels: saved_labels,
                             },
                             options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
                                 circumference: Math.PI,
                                 rotation: -Math.PI,
                                 legend: {
