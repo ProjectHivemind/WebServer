@@ -253,7 +253,7 @@
         $('#stage-action-confirm').attr('disabled', '');
         var already_staged = {};
         let selected_actions = $('#stage-action-table').DataTable().rows({ selected: true }).data();
-        let selected_implants = $('#stage-target-table').DataTable().rows({ selected: true }).data();
+        let selected_implants = $('#stage-target-table').DataTable().rows({ selected: true, search: 'applied' }).data();
         let selected_groups = $('#stage-group-table').DataTable().rows({ selected: true }).data();
 
         for (var i = 0; i < selected_actions.length; i++) {
